@@ -47,3 +47,13 @@ end
     cadastrar_usuario(api_url, dados)
   end
 end
+
+items = [
+  { description: 'Água', score: 4 },
+  { description: 'Comida', score: 3 },
+  { description: 'Medicamento', score: 2 },
+  { description: 'Munição', score: 1 }
+]
+items.each do |item|
+  Item.create(description: item[:description], score: item[:score])
+end
