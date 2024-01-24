@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           put :current_location
         end
       end
+      resources :items, defaults: { format: 'json' }
     end
   end
 
