@@ -1,9 +1,11 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# frozen_string_literal: true
+
+User.create(
+  name: FFaker::Name.name_with_prefix,
+  age: %i[20 25 30 35 40 45 50].sample,
+  gender: %i[Masculino Feminino].sample,
+  latitude: FFaker::Geolocation.lat,
+  longitude: FFaker::Geolocation.lng,
+  created_at: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now, format: :default),
+  updated_a: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now, format: :default)
+)
