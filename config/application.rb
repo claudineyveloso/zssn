@@ -19,6 +19,16 @@ module Zssn
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    config.time_zone = 'Brasilia'
+    # config.active_record.default_timezone = 'Brasilia'
+
+    config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
+
+    config.i18n.enforce_available_locales = true
+    config.i18n.default_locale = :'pt-BR'
+    config.i18n.locale = :'pt-BR'
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
