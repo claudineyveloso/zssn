@@ -30,4 +30,14 @@ content-type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/v1/users/3
+DELETE  http://localhost:3000/api/v1/users/1
+
+###
+
+PUT  http://localhost:3000/api/v1/users/58/current_location
+# "latitude": "-78.67250359171328",
+# "longitude": "126.35020104942726",
+{
+  "latitude": "-19.92337069418504",
+  "longitude": "-43.942577690286285"
+}

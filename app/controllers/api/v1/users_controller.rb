@@ -6,7 +6,6 @@ module Api
     # such as creating, updating, and deleting users.
     class UsersController < ApplicationController
       before_action :set_user, only: %i[current_location show update destroy]
-      before_action :set_user, only: %i[location_params]
 
       # Public: Display a list of all users.
       # GET /api/v1/users
