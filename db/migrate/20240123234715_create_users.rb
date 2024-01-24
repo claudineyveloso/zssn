@@ -9,8 +9,8 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :name, limit: 100, null: false
       t.integer :age, null: false
       t.string :gender, limit: 20, null: false
-      t.string :latitude, limit: 255, null: false
-      t.string :longitude, limit: 255, null: false
+      t.string :latitude, null: false
+      t.string :longitude, null: false
       t.boolean :infected, default: false
       t.integer :contamination_notification, default: 0
       t.boolean :is_active, default: true

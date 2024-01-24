@@ -10,13 +10,12 @@
 #  gender                     :string(20)       not null
 #  infected                   :boolean          default(FALSE)
 #  is_active                  :boolean          default(TRUE)
-#  latitude                   :string(255)      not null
-#  longitude                  :string(255)      not null
+#  latitude                   :string           not null
+#  longitude                  :string           not null
 #  name                       :string(100)      not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #
-# UserSerializer is responsible for defining the JSON representation of a User model when serialized.
 class UserSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
