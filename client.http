@@ -2,3 +2,32 @@ GET http://localhost:3000/api/v1/users
 
 ###
 
+POST http://localhost:3000/api/v1/users
+content-type: application/json
+
+{   
+    "name": "Claudiney Veloso",
+    "age": 55,
+    "gender": "Masculino",
+    "latitude": "-19.92337069418504",
+    "longitude": "-43.942577690286285"
+}
+
+###
+GET http://localhost:3000/api/v1/users/1
+
+###
+
+PUT http://localhost:3000/api/v1/users/1
+content-type: application/json
+{   
+  "name": "Claudiney Barbosa Veloso",
+  "age": 55,
+  "gender": "Masculino",
+  "latitude": "-19.92337069418504",
+  "longitude": "-43.942577690286285"
+}
+
+###
+
+DELETE  http://localhost:3000/api/v1/users/3

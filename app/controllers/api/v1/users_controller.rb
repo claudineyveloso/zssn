@@ -8,18 +8,26 @@ module Api
       before_action :set_user, only: %i[show update destroy]
 
       # Public: Display a list of all users.
-      # GET /users
+      # GET /api/v1/users
       # Returns an JSON displaying all users.
       def index
         # binding.break
-        render json: 'GET users'
+        users = User.all.order(name: :asc)
+        # users = User.all.order(email: :asc)
+        render json: users, status: 200, each_serializer: UserSerializer
       end
 
       # Public: Display details of a specific user.
-      # GET /users/:id
+      # GET /api/v1/users/2:id
       # id - The unique identifier of the user.
       # Returns an JSON displaying specified user.
-      def show; end
+      def show
+        if @user
+          render json: @user, each_serializer: UserSerializer
+        else
+          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+        end
+      end
 
       # Public: Render a form for creating a new user.
       # GET /users/new
@@ -32,27 +40,54 @@ module Api
       #               including :name, :email, :gender, :latitude, :longitude, :infected, :contamination_notification.
       # Returns a redirection to the created user's page or an error message.
       # Returns an JSON  with new user  created.
-      def create; end
+      def create
+        user = User.create!(user_params)
+        if user
+          render json: {
+            status: { code: 200, message: 'Usuário cadastrado com sucesso.', status: :success }
+          }
+        else
+          render json: {
+            status: { code: 500, message: 'Ocorreu um erro para cadastrar um usuário.', status: :error }
+          }
+        end
+      end
 
       # Public: Render a form for editing a specific user.
-      # GET /users/:id/edit
+      # GET /api/v1/users/:id/edit
       # id - The unique identifier of the user.
       # Returns an HTML page with a form for editing the specified user.
       def edit; end
 
       # Public: Update a specific user.
-      # PATCH/PUT /users/:id
+      # PATCH/PUT /api/v1/users/:id
       # id          - The unique identifier of the user.
       # user_params - Strong parameters for updating a user, typically
       #               including :name, :email, :gender, :latitude, :longitude, :infected, :contamination_notification.
       # Returns a redirection to the updated user's page or an error message.
-      def update; end
+      def update
+        if @user
+          @user.update(user_params)
+          render json: {
+            status: { code: 200, message: 'Dados do usuário alterado com sucesso.', status: :success }
+          }
+        else
+          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+        end
+      end
 
       # Public: Delete a specific user.
-      # DELETE /users/:id
+      # DELETE /api/v1/users/:id
       # id - The unique identifier of the user.
       # Returns a redirection to the list of users or an error message.
-      def destroy; end
+      def destroy
+        if @user
+          @user.destroy
+          render json: { code: 200, message: 'Usuário apagado com sucesso.', status: :success }
+        else
+          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+        end
+      end
 
       private
 
@@ -62,7 +97,7 @@ module Api
       # params[:id] - The unique identifier of the user.
       # Returns nothing. Sets the @user instance variable.
       def set_user
-        @user = User.find(params[:id])
+        @user = User.find_by(id: params[:id])
       end
 
       # Private: Defines the permitted parameters for user creation and update.

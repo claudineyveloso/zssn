@@ -17,4 +17,22 @@
 #  updated_at                 :datetime         not null
 #
 class User < ApplicationRecord
+  validates :name,
+            length: { maximum: 100 },
+            presence: true
+
+  validates :age,
+            presence: true
+
+  validates :gender,
+            length: { maximum: 20 },
+            presence: true
+
+  validates :latitude,
+            length: { maximum: 255 },
+            presence: true
+
+  validates :longitude,
+            length: { maximum: 255 },
+            presence: true
 end

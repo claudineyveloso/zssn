@@ -19,10 +19,14 @@
 # UserSerializer is responsible for defining the JSON representation of a User model when serialized.
 class UserSerializer < ActiveModel::Serializer
   attributes :id,
+             :name,
              :age,
              :gender,
              :latitude,
              :longitude,
              :infected,
-             :contamination_notification
+             :contamination_notification,
+             :is_active,
+             :created_at,
+             :updated_at
 end

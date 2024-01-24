@@ -16,6 +16,10 @@
 #
 FactoryBot.define do
   factory :user do
-    name { "MyString" }
+    name { Faker::Name.name }
+    age { Faker::Number.between(from: 18, to: 99) }
+    gender { 'Male' }
+    latitude { Faker::Address.latitude }
+    longitude { Faker::Address.longitude }
   end
 end
