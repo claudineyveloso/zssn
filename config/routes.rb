@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Public: Routes for managing users.
-      resources :users, defaults: { format: 'json' }
+      resources :users, defaults: { format: 'json' } do
+        member do
+          put :current_location
+        end
+      end
     end
   end
 

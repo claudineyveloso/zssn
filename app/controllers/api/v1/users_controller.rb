@@ -5,7 +5,8 @@ module Api
     # UsersController is responsible for handling user-related actions,
     # such as creating, updating, and deleting users.
     class UsersController < ApplicationController
-      before_action :set_user, only: %i[show update destroy]
+      before_action :set_user, only: %i[current_location show update destroy]
+      before_action :set_user, only: %i[location_params]
 
       # Public: Display a list of all users.
       # GET /api/v1/users
@@ -25,7 +26,10 @@ module Api
         if @user
           render json: @user, each_serializer: UserSerializer
         else
-          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+          render json: { code: 404,
+                         errors: @user.errors.full_messages,
+                         message: 'Usuário não cadastrado no ZSSN.',
+                         status: :not_found }
         end
       end
 
@@ -48,7 +52,10 @@ module Api
           }
         else
           render json: {
-            status: { code: 500, message: 'Ocorreu um erro para cadastrar um usuário.', status: :error }
+            status: { code: 500,
+                      errors: @user.errors.full_messages,
+                      message: 'Ocorreu um erro para cadastrar um usuário.',
+                      status: :error }
           }
         end
       end
@@ -72,7 +79,10 @@ module Api
             status: { code: 200, message: 'Dados do usuário alterado com sucesso.', status: :success }
           }
         else
-          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+          render json: { code: 404,
+                         errors: @user.errors.full_messages,
+                         message: 'Usuário não cadastrado no ZSSN.',
+                         status: :not_found }
         end
       end
 
@@ -85,7 +95,19 @@ module Api
           @user.destroy
           render json: { code: 200, message: 'Usuário apagado com sucesso.', status: :success }
         else
-          render json: { code: 404, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+          render json: { code: 404,
+                         errors: @user.errors.full_messages,
+                         message: 'Usuário não cadastrado no ZSSN.',
+                         status: :not_found }
+        end
+      end
+
+      def current_location
+        if @user
+          @user.update(location_params)
+          render json: { code: 200, message: 'Localização atualizada com sucesso.', status: :success }
+        else
+          render json: { code: 404, errors: @user.errors.full_messages, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
         end
       end
 
@@ -98,6 +120,10 @@ module Api
       # Returns nothing. Sets the @user instance variable.
       def set_user
         @user = User.find_by(id: params[:id])
+      end
+
+      def location_params
+        params.require(:user).permit(:latitude, :longitude)
       end
 
       # Private: Defines the permitted parameters for user creation and update.
