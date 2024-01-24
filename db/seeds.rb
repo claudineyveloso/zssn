@@ -6,9 +6,9 @@ api_url = URI.parse('http://localhost:3000/api/v1/users')
 
 def gender_from_name(name)
   first_name = name.split(' ')[0]
-  last_letter = first_name[-1].downcase
+  last_letter = first_name[-1].downcase == '.' ? first_name[-2].downcase : first_name[-1].downcase
 
-  if %w[a e i o u].include?(last_letter)
+  if %w[a e i z].include?(last_letter)
     'Feminino'
   else
     'Masculino'
