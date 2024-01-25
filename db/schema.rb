@@ -23,11 +23,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_24_204908) do
 
   create_table "inventories", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "item_id", null: false
-    t.integer "quantity"
+    t.jsonb "items", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["item_id"], name: "index_inventories_on_item_id"
+    t.index ["items"], name: "index_inventories_on_items", using: :gin
     t.index ["user_id"], name: "index_inventories_on_user_id"
   end
 

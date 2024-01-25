@@ -9,41 +9,46 @@ module Api
       end
 
       def show
-        render json: @inventario
+        render json: @inventory
       end
 
       def create
-        @inventario = Inventario.new(inventario_params)
-
-        if @inventario.save
-          render json: @inventario, status: :created
+        inventory = Inventory.create!(inventory_params)
+        if inventory
+          render json: {
+            status: { code: 200, message: 'Inventário cadastrado com sucesso.', status: :success }
+          }
         else
-          render json: @inventario.errors, status: :unprocessable_entity
+          render json: {
+            status: { code: 500,
+                      errors: user.errors.full_messages,
+                      message: 'Ocorreu um erro para cadastrar item(s) no inventário do usuário.',
+                      status: :error }
+          }
         end
       end
 
       def update
-        if @inventario.update(inventario_params)
-          render json: @inventario
+        if @inventory.update(inventory_params)
+          render json: @inventory
         else
-          render json: @inventario.errors, status: :unprocessable_entity
+          render json: @inventory.errors, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @inventario.destroy
+        @inventory.destroy
         head :no_content
       end
 
       private
 
-      def set_inventario
-        @inventario = Inventario.find(params[:id])
+      def set_inventory
+        @inventory = Inventory.find(params[:id])
       end
 
-      def inventario_params
-        # params.require(:inventario).permit(:usuario_id, :data, itens: %i[comida agua medicamento municao])
-        params.require(:inventario).permit(:usuario_id, :data, itens: [])
+      def inventory_params
+        params.require(:inventory).permit(:user_id, items: %i[id description score total])
       end
     end
   end

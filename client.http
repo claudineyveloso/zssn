@@ -52,3 +52,18 @@ content-type: application/json
   "user_id_reported": 32,
   "user_id_notified": 6
 }
+
+###
+
+POST http://localhost:3000/api/v1/inventories
+content-type: application/json
+{
+  "user_id":23, 
+  "items":[
+    {"id":1, "description":"Água", "quantity": 3, "score":2, "total": 8}
+    {"id":2, "description": "Comida", "quantity": 3, "score":3, "total": 10}, 
+  ]
+}
+
+
+

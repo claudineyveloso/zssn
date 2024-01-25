@@ -17,7 +17,12 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Inventory < ApplicationRecord
-  belongs_to :user
-  validates :items, presence: true
+class InventorySerializer < ActiveModel::Serializer
+  attributes :id,
+             :user_id,
+             :items
+
+  # def serializable_hash
+  #   super.transform_keys(&:to_sym)
+  # end
 end
