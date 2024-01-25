@@ -11,7 +11,7 @@ module Api
       # GET /api/v1/users
       # Returns an JSON displaying all users.
       def index
-        users = User.all.order(name: :asc)
+        users = User.all.where(infected: false).order(name: :asc)
         render json: {
           meta: { infecteds: User.percentual_infecteds(true), no_infecteds: User.percentual_infecteds(false) },
           status: {

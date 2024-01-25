@@ -10,8 +10,9 @@ Rails.application.routes.draw do
           put :current_location
         end
       end
-      resources :items, only: %i[create destroy], defaults: { format: 'json' }
+      # resources :items, only: %i[create destroy], defaults: { format: 'json' }
       resources :infecteds, only: %i[create destroy], defaults: { format: 'json' }
+      resources :inventories, defaults: { format: 'json' }
     end
   end
 end
