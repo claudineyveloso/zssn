@@ -2,6 +2,6 @@
 
 class Water < Item
   def initialize
-    super('Água', 3)
+    super(1, 'Água', 3)
   end
 end

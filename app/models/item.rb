@@ -2,9 +2,10 @@
 
 # main item class
 class Item
-  attr_accessor :description, :score
+  attr_accessor :id, :description, :score
 
-  def initialize(description, score)
+  def initialize(id, description, score)
+    @id = id
     @description = description
     @score = score
   end

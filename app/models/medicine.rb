@@ -2,6 +2,6 @@
 
 class Medicine < Item
   def initialize
-    super('Medicamento', 2)
+    super(3, 'Medicamento', 2)
   end
 end

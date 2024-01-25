@@ -2,6 +2,6 @@
 
 class Ammunition < Item
   def initialize
-    super('Munição', 1)
+    super(4, 'Munição', 1)
   end
 end

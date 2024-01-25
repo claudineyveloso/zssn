@@ -2,6 +2,6 @@
 
 class Food < Item
   def initialize
-    super('Comida', 1)
+    super(2, 'Comida', 1)
   end
 end
