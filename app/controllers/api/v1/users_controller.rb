@@ -11,10 +11,13 @@ module Api
       # GET /api/v1/users
       # Returns an JSON displaying all users.
       def index
-        # binding.break
         users = User.all.order(name: :asc)
-        # users = User.all.order(email: :asc)
-        render json: users, status: 200, each_serializer: UserSerializer
+        render json: {
+          meta: { infecteds: User.percentual_infecteds(true), no_infecteds: User.percentual_infecteds(false) },
+          status: {
+            data: { user: users }
+          }
+        }, status: :ok
       end
 
       # Public: Display details of a specific user.
@@ -52,7 +55,7 @@ module Api
         else
           render json: {
             status: { code: 500,
-                      errors: @user.errors.full_messages,
+                      errors: user.errors.full_messages,
                       message: 'Ocorreu um erro para cadastrar um usuário.',
                       status: :error }
           }

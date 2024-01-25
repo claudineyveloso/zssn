@@ -48,30 +48,3 @@ end
     create_user(api_url, dados)
   end
 end
-
-items = [
-  { description: 'Água', score: 4 },
-  { description: 'Comida', score: 3 },
-  { description: 'Medicamento', score: 2 },
-  { description: 'Munição', score: 1 }
-]
-
-def create_item(api_url_item, data)
-  http = Net::HTTP.new(api_url_item.host, api_url_item.port)
-  request = Net::HTTP::Post.new(api_url_item.path, { 'Content-Type' => 'application/json' })
-  request.body = data.to_json
-
-  response = http.request(request)
-
-  # Verifique se a resposta foi bem-sucedida (código 2xx)
-  if response.is_a?(Net::HTTPSuccess)
-    puts 'Item cadastrado com sucesso!'
-  else
-    puts "Erro ao cadastrar um item. Código de resposta: #{response.code}"
-    puts "Resposta: #{response.body}"
-  end
-end
-
-items.each do |item|
-  create_item(api_url_item, item)
-end

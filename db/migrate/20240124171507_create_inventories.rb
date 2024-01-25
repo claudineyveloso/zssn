@@ -7,10 +7,11 @@ class CreateInventories < ActiveRecord::Migration[7.1]
   def change
     create_table :inventories do |t|
       t.references :user, null: false, foreign_key: true
-      t.references :item, null: false, foreign_key: true
+      t.bigint :item_id, null: false
       t.integer :quantity
 
       t.timestamps
     end
+    add_index(:inventories, :item_id)
   end
 end
