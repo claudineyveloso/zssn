@@ -15,6 +15,5 @@
 #  fk_rails_...  (user_id_reported => users.id)
 #
 class Infected < ApplicationRecord
-  belongs_to :user_id_reported, class_name: 'User', foreign_key: 'user_id_reported'
-  belongs_to :user_id_notified, class_name: 'User', foreign_key: 'user_id_notified'
+  belongs_to :users, class_name: 'User', foreign_key: 'user_id_reported'
 end

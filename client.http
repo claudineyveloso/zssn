@@ -14,7 +14,7 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3000/api/v1/users/1
+GET http://localhost:3000/api/v1/users/6
 
 ###
 
@@ -42,4 +42,13 @@ PUT  http://localhost:3000/api/v1/users/58/current_location
 {
   "latitude": "-19.92337069418504",
   "longitude": "-43.942577690286285"
+}
+
+
+###
+POST http://localhost:3000/api/v1/infecteds
+content-type: application/json
+{
+  "user_id_reported": 32,
+  "user_id_notified": 6
 }
