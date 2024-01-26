@@ -5,8 +5,6 @@ module Api
     # UsersController is responsible for handling user-related actions,
     # such as creating, updating, and deleting users.
     class UsersController < ApplicationController
-      # before_action :set_user, only: %i[current_location show update destroy]
-
       # Public: Display a list of all users.
       # GET /api/v1/users
       # Returns an JSON displaying all users.
@@ -14,7 +12,9 @@ module Api
         users = User.all.where(infected: false).order(name: :asc)
         render json: {
           meta: { infecteds: User.percentual_infecteds(true), no_infecteds: User.percentual_infecteds(false) },
-          data: { user: users }
+          status: {
+            data: { user: users }
+          }
         }, status: :ok
       end
 
@@ -24,11 +24,9 @@ module Api
       # Returns an JSON displaying specified user.
       def show
         user = find_user
-        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
+        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
 
-        render json: {
-          data: { user:, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}. ", status: :success }
-        }
+        render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: 'success' }
       end
 
       # Public: Render a form for creating a new user.
@@ -45,7 +43,7 @@ module Api
       def create
         user = User.create!(user_params)
         render json: {
-          data: { user:, code: 200, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
+          status: { user:, code: 200, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
@@ -65,12 +63,12 @@ module Api
       # Returns a redirection to the updated user's page or an error message.
       def update
         user = find_user
-        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
+        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
 
-        user.update(user_params)
-        render json: {
-          data: { user: @user, code: 200, message: 'Nemesis informa: Dados do usuário alterado com sucesso.', status: :success }
-        }
+        user.update!(user_params)
+        render json: { data: user, message: 'Nemesis informa: Dados do usuário alterado com sucesso', status: :ok }
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
 
       # Public: Delete a specific user.
@@ -79,21 +77,20 @@ module Api
       # Returns a redirection to the list of users or an error message.
       def destroy
         user = find_user
-        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
+        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
 
         user.destroy
-        render json: { user: @user, code: 200, message: 'Nemesis informa: Usuário apagado com sucesso.', status: :success }
+        render json: { code: 200, message: 'Usuário apagado com sucesso.', status: :success }
       end
 
       def current_location
         user = find_user
-        return render json: { error: 'Item não encontrado', status: :not_found } unless user
+        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
 
-        if user.update(location_params)
-          render json: { code: 200, message: 'Nemesis informa: Localização atualizada com sucesso.', status: :success }
-        else
-          render json: { code: 404, errors: @user.errors.full_messages, message: 'Nemesis informa: Usuário não cadastrado no ZSSN.', status: :not_found }
-        end
+        user.update(location_params)
+        render json: { data: user, code: 200, message: 'Nemesis informa: Localização atualizada com sucesso.', status: :success }
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
 
       private
