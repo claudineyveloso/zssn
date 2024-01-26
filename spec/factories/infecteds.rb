@@ -14,7 +14,7 @@
 #
 FactoryBot.define do
   factory :infected do
-    user_id_reported { "" }
-    user_id_notified { "" }
+    user_id_reported { 1 }
+    user_id_notified { 1 }
   end
 end

@@ -15,5 +15,7 @@
 require 'rails_helper'
 
 RSpec.describe Infected, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'associations' do
+    # should belong_to(:user).class_name('User').with_foreign_key('user_id_reported')
+  end
 end
