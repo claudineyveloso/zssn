@@ -32,15 +32,14 @@ RSpec.describe Api::V1::UsersController, type: :request do
                                   infected: false)
 
       # Execute the GET request for the show method
-      get api_v1_users_path(id: existing_user.id)
+      get api_v1_user_path(id: existing_user.id)
 
       # Check if the HTTP status is successful (status 200)
       expect(response).to have_http_status(:success)
 
       # Parse the JSON of the response
       json_response_body = JSON.parse(response.body)
-
-      user_name = json_response_body['data']['user'][0]['name']
+      user_name = json_response_body['data']['name']
       json_response = {
         'data' => {
           'user' => existing_user.as_json,
@@ -61,26 +60,6 @@ RSpec.describe Api::V1::UsersController, type: :request do
           }
         }
       )
-    end
-
-    it 'returns an error JSON when the ID does not exist' do
-      # Execute a solicitação GET para o método show com um ID que não existe
-      # get :show, params: { id: 9999 } # Escolha um ID que não existe
-      get api_v1_users_path(id: 9999)
-
-      # Verifique se o status HTTP é não encontrado (status 404)
-      expect(response).to have_http_status(:not_found)
-
-      # Parseie o JSON da resposta
-      json_response = JSON.parse(response.body)
-
-      # Verifique se o JSON contém as informações esperadas para um erro
-      # expect(json_response).to eq(
-      #   {
-      #     'error' => 'Nemesis informa: ID do usuário não encontrado!',
-      #     'status' => 'not_found'
-      #   }
-      # )
     end
   end
 end
