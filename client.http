@@ -56,6 +56,10 @@ content-type: application/json
 
 ###
 
+GET http://localhost:3000/api/v1/users/1/inventories
+
+###
+
 POST http://localhost:3000/api/v1/inventories
 content-type: application/json
 {

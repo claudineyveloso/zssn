@@ -17,6 +17,7 @@
 #  updated_at                 :datetime         not null
 #
 class User < ApplicationRecord
+  has_many :inventories
   has_many :reporteds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_reported'
   has_many :notifieds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_notified'
 

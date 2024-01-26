@@ -11,6 +11,7 @@
 #  updated_at  :datetime         not null
 #
 class Item < ApplicationRecord
+  has_many :inventories
   validates :description,
             presence: true,
             length: { maximum: 20 },
