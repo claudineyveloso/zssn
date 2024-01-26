@@ -16,13 +16,13 @@ module Api
         inventory = Inventory.create!(inventory_params)
         if inventory
           render json: {
-            status: { code: 200, message: 'Inventário cadastrado com sucesso.', status: :success }
+            status: { code: 200, message: 'Nemesis informa: Inventário cadastrado com sucesso.', status: :success }
           }
         else
           render json: {
             status: { code: 500,
                       errors: user.errors.full_messages,
-                      message: 'Ocorreu um erro para cadastrar item(s) no inventário do usuário.',
+                      message: 'Nemesis informa: Ocorreu um erro para cadastrar item(s) no inventário do usuário.',
                       status: :error }
           }
         end

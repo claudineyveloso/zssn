@@ -30,7 +30,7 @@ module Api
         else
           render json: { code: 404,
                          errors: @user.errors.full_messages,
-                         message: 'Usuário não cadastrado no ZSSN.',
+                         message: 'Nemesis informa: Usuário não cadastrado no ZSSN.',
                          status: :not_found }
         end
       end
@@ -50,13 +50,13 @@ module Api
         user = User.create!(user_params)
         if user
           render json: {
-            status: { code: 200, message: 'Usuário cadastrado com sucesso.', status: :success }
+            status: { code: 200, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
           }
         else
           render json: {
             status: { code: 500,
                       errors: user.errors.full_messages,
-                      message: 'Ocorreu um erro para cadastrar um usuário.',
+                      message: 'Nemesis informa: Ocorreu um erro para cadastrar um usuário.',
                       status: :error }
           }
         end
@@ -78,12 +78,12 @@ module Api
         if @user
           @user.update(user_params)
           render json: {
-            status: { code: 200, message: 'Dados do usuário alterado com sucesso.', status: :success }
+            status: { code: 200, message: 'Nemesis informa: Dados do usuário alterado com sucesso.', status: :success }
           }
         else
           render json: { code: 404,
                          errors: @user.errors.full_messages,
-                         message: 'Usuário não cadastrado no ZSSN.',
+                         message: 'Nemesis informa: Usuário não cadastrado no ZSSN.',
                          status: :not_found }
         end
       end
@@ -95,11 +95,11 @@ module Api
       def destroy
         if @user
           @user.destroy
-          render json: { code: 200, message: 'Usuário apagado com sucesso.', status: :success }
+          render json: { code: 200, message: 'Nemesis informa: Usuário apagado com sucesso.', status: :success }
         else
           render json: { code: 404,
                          errors: @user.errors.full_messages,
-                         message: 'Usuário não cadastrado no ZSSN.',
+                         message: 'Nemesis informa: Usuário não cadastrado no ZSSN.',
                          status: :not_found }
         end
       end
@@ -107,9 +107,9 @@ module Api
       def current_location
         if @user
           @user.update(location_params)
-          render json: { code: 200, message: 'Localização atualizada com sucesso.', status: :success }
+          render json: { code: 200, message: 'Nemesis informa: Localização atualizada com sucesso.', status: :success }
         else
-          render json: { code: 404, errors: @user.errors.full_messages, message: 'Usuário não cadastrado no ZSSN.', status: :not_found }
+          render json: { code: 404, errors: @user.errors.full_messages, message: 'Nemesis informa: Usuário não cadastrado no ZSSN.', status: :not_found }
         end
       end
 
