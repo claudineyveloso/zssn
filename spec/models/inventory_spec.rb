@@ -21,6 +21,14 @@
 #
 require 'rails_helper'
 
-# RSpec.describe Inventory, type: :model do
-#   pending "add some examples to (or delete) #{__FILE__}"
-# end
+RSpec.describe Inventory, type: :model do
+  describe 'Associations' do
+    # it { should belongs_to(:user) }
+    # it { should belongs_to(:item) }
+  end
+
+  describe 'Validations' do
+    it { should validate_presence_of(:user_id) }
+    it { should validate_presence_of(:item_id) }
+  end
+end
