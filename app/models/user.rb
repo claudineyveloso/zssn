@@ -45,4 +45,12 @@ class User < ApplicationRecord
   validates :longitude,
             length: { maximum: 255 },
             presence: true
+
+  validate :valid_id_exists?, on: :destroy
+
+  private
+
+  def valid_id_exists?
+    errors.add(:base, 'Nemesis informa: ID do usuário não encontrado') unless self.class.exists?(id)
+  end
 end
