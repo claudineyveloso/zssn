@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: items
@@ -8,9 +10,8 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-FactoryBot.define do
-  factory :item do
-    description { 'Medicamento' }
-    score { 2 }
-  end
+class ItemSerializer < ActiveModel::Serializer
+  attributes :id,
+             :description,
+             :score
 end

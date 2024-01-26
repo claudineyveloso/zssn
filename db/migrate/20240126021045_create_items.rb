@@ -3,7 +3,7 @@
 class CreateItems < ActiveRecord::Migration[7.1]
   def change
     create_table :items do |t|
-      t.string :description, null: false
+      t.string :description, limit: 20, null: false
       t.integer :score, null: false
 
       t.timestamps
