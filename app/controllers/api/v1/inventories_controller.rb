@@ -2,9 +2,13 @@
 
 module Api
   module V1
+    # InventáriosController is responsible for handling actions related to the user's item inventory,
+    # In this controller we will only have the create and destroy method.
     class InventoriesController < ApplicationController
       def index
-        inventories = Inventory.all
+        user = User.find(params[:user_id])
+        inventories = Inventory.where(user_id: user.id).map { |u| u.as_json.merge(user:) }
+
         render json: {
           data: { inventory: inventories }
         }, status: :ok
@@ -16,7 +20,7 @@ module Api
         quantidade = params[:quantidade]
         inventory = Inventory.create!(inventory_params)
         render json: {
-          data: { user:, code: 200, message: 'Nemesis informa: Inventário cadastrado com sucesso.', status: :success }
+          data: { inventory:, code: 200, message: 'Nemesis informa: Item do inventário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
@@ -26,7 +30,7 @@ module Api
         user = User.find(params[:user_id])
         item = Item.find(params[:item_id])
         inventory = Inventory.find_by(user_id: user, item_id: item)
-        return render json: { "error": 'Nemesis informa: ID do item do inventário não encontrado!', "status": 'not_found' } unless inventory
+        return render json: { "error": 'Nemesis informa: ID do usuário ou do item do inventário não encontrado!', "status": 'not_found' } unless inventory
 
         inventory.destroy
         render json: { code: 200, message: 'Item do inventário apagado com sucesso.', status: :success }
@@ -43,7 +47,7 @@ module Api
       end
 
       def inventory_params
-        params.require(:inventory).permit(:user_id, items: %i[id description score quantity])
+        params.require(:inventory).permit(:user_id, :item_id, :quantity)
       end
     end
   end
