@@ -23,8 +23,8 @@ require 'rails_helper'
 
 RSpec.describe Inventory, type: :model do
   describe 'Associations' do
-    # it { should belongs_to(:user) }
-    # it { should belongs_to(:item) }
+    it { should belong_to(:user) }
+    it { should belong_to(:item) }
   end
 
   describe 'Validations' do
