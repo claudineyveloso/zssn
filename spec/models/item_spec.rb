@@ -36,4 +36,8 @@ RSpec.describe Item, type: :model do
       expect(item.errors[:description]).to include('Nemesis informa: Descrição inválida para este item!')
     end
   end
+  describe 'validations' do
+    it { should validate_presence_of(:score) }
+    it { should validate_numericality_of(:score).only_integer.is_greater_than_or_equal_to(0) }
+  end
 end

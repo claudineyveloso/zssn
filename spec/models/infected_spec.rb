@@ -16,6 +16,6 @@ require 'rails_helper'
 
 RSpec.describe Infected, type: :model do
   describe 'associations' do
-    # should belong_to(:user).class_name('User').with_foreign_key('user_id_reported')
+    it { should belong_to(:user) }
   end
 end
