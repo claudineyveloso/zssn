@@ -21,7 +21,7 @@
 #
 FactoryBot.define do
   factory :inventory do
-    user { nil }
-    item { nil }
+    user { 1 }
+    item { 1 }
   end
 end

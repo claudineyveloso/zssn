@@ -11,8 +11,8 @@ RSpec.describe Api::V1::UsersController, type: :request do
                           infected: false)
       user3 = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
                           infected: true)
-      # result = User.all.where(infected: false).order(name: :asc)
-      # expect(result).to eq([user2, user1])
+      result = User.all.where(infected: false).order(name: :asc)
+      expect(result).to eq([user2, user1])
 
       get api_v1_users_path
       expect(response).to have_http_status(:ok)
