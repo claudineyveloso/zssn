@@ -26,6 +26,11 @@ module Api
         end
       end
 
+      def check_infected
+        result = Infected.find_by(user_id_reported: params[:user_id_reported], user_id_notified: params[:user_id_notified]).present?
+        render json: { result: }
+      end
+
       def infected_params
         params.require(:infected).permit(:user_id_reported,
                                          :user_id_notified)
