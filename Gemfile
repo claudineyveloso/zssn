@@ -47,6 +47,8 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+
+  gem 'database_cleaner', '~> 2.0', '>= 2.0.2'
 end
 
 group :development do

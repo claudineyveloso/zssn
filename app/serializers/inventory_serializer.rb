@@ -22,9 +22,6 @@
 class InventorySerializer < ActiveModel::Serializer
   attributes :id,
              :user_id,
-             :items
-
-  # def serializable_hash
-  #   super.transform_keys(&:to_sym)
-  # end
+             :item_id,
+             :quantity
 end

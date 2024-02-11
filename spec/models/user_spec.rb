@@ -14,9 +14,15 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe '#create' do
+    let(:user) { FactoryBot.create(:user) }
+    it { is_expected.to be_valid }
+  end
+
   describe 'associations' do
     it { should have_many(:inventories) }
     it do

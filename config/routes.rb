@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       end
       resources :items, only: %i[index create destroy], defaults: { format: 'json' }
       resources :infecteds, only: %i[create destroy], defaults: { format: 'json' }
+
+      # Added the route for the check infected action
+      get '/check_infected', to: 'infecteds#check_infected'
     end
   end
 end
