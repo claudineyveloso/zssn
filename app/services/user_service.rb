@@ -13,7 +13,7 @@ class UserService
   end
 
   def report_infected
-    user = User.find_by(id: @user_id_notified)
+    user = User.find_by(id: @user)
     if user.contamination_notification == 2
       user.update(contamination_notification: user.contamination_notification + 1, infected: true)
     else
