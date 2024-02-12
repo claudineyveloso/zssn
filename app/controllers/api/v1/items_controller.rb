@@ -14,7 +14,7 @@ module Api
       def create
         item = Item.create!(item_params)
         render json: {
-          status: { item:, code: 200, message: 'Nemesis informa: Item do inventário cadastrado com sucesso.', status: :success }
+          data: { item:, code: 201, message: 'Nemesis informa: Item do inventário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }

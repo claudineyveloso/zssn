@@ -15,7 +15,7 @@ module Api
           render json: {
             status: { code: 200, message: 'Nemesis informa: Usuário infectado cadastrado com sucesso.', status: :success }
           }
-          ContaminationService.new(params[:user_id_notified]).update_contamination
+          ContaminationService.new(params[:user_id_notified]).report_infected
         else
           render json: {
             status: { code: 500,

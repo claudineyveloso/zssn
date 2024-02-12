@@ -11,27 +11,10 @@ module Api
       def index
         users = User.all.where(infected: false).order(name: :asc)
         render json: {
-          meta: { infecteds: User.percentual_infecteds(true), no_infecteds: User.percentual_infecteds(false) },
+            meta: { infecteds: "#{User.percentual_infecteds(true).to_i}%", no_infecteds: "#{User.percentual_infecteds(false).to_i}%" },
           data: { user: users }
         }, status: :ok
       end
-
-      # Public: Display details of a specific user.
-      # GET /api/v1/users/2:id
-      # id - The unique identifier of the user.
-      # Returns an JSON displaying specified user.
-      def show
-        # binding.break
-        user = find_user
-        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
-
-        render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: :success }
-      end
-
-      # Public: Render a form for creating a new user.
-      # GET /users/new
-      # Returns an JSON  with new user  created.
-      def new; end
 
       # Public: Create a new user.
       # POST /users
@@ -40,54 +23,40 @@ module Api
       # Returns a redirection to the created user's page or an error message.
       # Returns an JSON  with new user  created.
       def create
-        user = User.create!(user_params)
+        user = UserService.create_user_with_inventory(user_params)
         render json: {
-          data: { user:, code: 200, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
+          data: { user:, code: 201, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
 
-      # Public: Render a form for editing a specific user.
-      # GET /api/v1/users/:id/edit
-      # id - The unique identifier of the user.
-      # Returns an HTML page with a form for editing the specified user.
-      def edit; end
-
-      # Public: Update a specific user.
-      # PATCH/PUT /api/v1/users/:id
-      # id          - The unique identifier of the user.
-      # user_params - Strong parameters for updating a user, typically
-      #               including :name, :email, :gender, :latitude, :longitude, :infected, :contamination_notification.
-      # Returns a redirection to the updated user's page or an error message.
-      def update
-        user = find_user
-        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
-
-        user.update!(user_params)
-        render json: { data: user, message: 'Nemesis informa: Dados do usuário alterado com sucesso', status: :success }
-      rescue ActiveRecord::RecordInvalid => e
-        render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
-      end
-
       # Public: Delete a specific user.
-      # DELETE /api/v1/users/:id
+      # PUT /api/v1/users/:id/current_location
       # id - The unique identifier of the user.
-      # Returns a redirection to the list of users or an error message.
-      def destroy
-        user = find_user
-        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', "status": 'not_found' } unless user
-
-        user.destroy
-        render json: { code: 200, message: 'Usuário apagado com sucesso.', status: :success }
-      end
-
+      # Returns a user with their updated location
       def current_location
         user = find_user
         return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
 
         user.update(location_params)
-        render json: { data: user, code: 200, message: 'Nemesis informa: Localização atualizada com sucesso.', status: :success }
+        render json: { data: {
+                        id: user.id,
+                        name: user.name,
+                        age: user.age,
+                        latitude: user.latitude,
+                        longitude: user.longitude,
+                        infected: user.infected,
+                        contamination_notification: user.contamination_notification,
+                        is_active: user.is_active,
+                        created_at: user.created_at,
+                        updated_at: user.updated_at
+                      },
+                      code: 200,
+                      message: 'Nemesis informa: Localização atualizada com sucesso.',
+                      status: :success
+                    }
+
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
