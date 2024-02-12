@@ -9,7 +9,6 @@
 #  contamination_notification :integer          default(0)
 #  gender                     :string(20)       not null
 #  infected                   :boolean          default(FALSE)
-#  is_active                  :boolean          default(TRUE)
 #  latitude                   :string           not null
 #  longitude                  :string           not null
 #  name                       :string(100)      not null
@@ -25,7 +24,6 @@ class UserSerializer < ActiveModel::Serializer
              :longitude,
              :infected,
              :contamination_notification,
-             :is_active,
              :created_at,
              :updated_at
 end
