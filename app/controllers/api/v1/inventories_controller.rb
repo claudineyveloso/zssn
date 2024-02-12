@@ -24,6 +24,22 @@ module Api
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
 
+      def inventory_items
+        user = User.find(params[:user_id])
+        inventory = user.inventory
+        render json: { data: {
+          id: user.id,
+          name: user.name,
+          gender: user.gender,
+          items: inventory.items
+        },
+          code: 200,
+          message: "Nemesis informa: Items do inventário do usuário #{user.name}.",
+          status: :success,
+        }
+
+      end
+
       private
 
       def fetch_users(id)

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
             # /api/v1/users/1/inventories/item_exchange/user_receiver/2
           end
         end
+        get 'inventory_items', to: 'inventories#inventory_items'
       end
       resources :items, only: %i[index create destroy], defaults: { format: 'json' }
       resources :infecteds, only: %i[create destroy], defaults: { format: 'json' }

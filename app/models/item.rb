@@ -11,7 +11,8 @@
 #  updated_at  :datetime         not null
 #
 class Item < ApplicationRecord
-  has_many :inventories
+  has_many :inventory_items, dependent: :destroy
+  has_many :inventories, through: :inventory_items
   validates :description,
             presence: true,
             length: { maximum: 20 },
