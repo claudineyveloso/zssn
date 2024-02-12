@@ -10,7 +10,6 @@ require: []
 domains: []
 reporters:
 - rubocop
-- rubocop-rspec
 - require_not_found
 formatter:
   rubocop:
