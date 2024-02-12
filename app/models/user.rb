@@ -49,9 +49,14 @@ class User < ApplicationRecord
 
   validate :valid_id_exists?, on: :destroy
 
+  def create_inventory
+    Inventory.create(user: self)
+  end
+
   private
 
   def valid_id_exists?
     errors.add(:base, 'Nemesis informa: ID do usuário não encontrado') unless self.class.exists?(id)
   end
+
 end
