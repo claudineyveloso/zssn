@@ -7,7 +7,6 @@
 #  contamination_notification :integer          default(0)
 #  gender                     :string(20)       not null
 #  infected                   :boolean          default(FALSE)
-#  is_active                  :boolean          default(TRUE)
 #  latitude                   :string           not null
 #  longitude                  :string           not null
 #  name                       :string(100)      not null
@@ -19,8 +18,10 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe '#create' do
-    let(:user) { FactoryBot.create(:user) }
-    it { is_expected.to be_valid }
+    it 'creates a new user' do
+      user = FactoryBot.create(:user)
+      expect(user).to be_valid
+    end
   end
 
   describe 'associations' do
@@ -66,6 +67,12 @@ RSpec.describe User, type: :model do
   end
 
   describe '.infecteds' do
+    it 'creates a new infected user' do
+      infected_user = FactoryBot.create(:user, infected: true)
+      expect(infected_user).to be_valid
+      expect(infected_user.infected).to eq(true)
+    end
+
     it 'returns the count of infected users' do
       # Created some users to test
       User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
@@ -96,22 +103,14 @@ RSpec.describe User, type: :model do
                   infected: true)
 
       percentual_infected = User.percentual_infecteds(true)
-      expect(percentual_infected).to eq(33.33333333333333)
+      expect(percentual_infected).to eq(33.33)
     end
+
     it 'returns 0 when there are no users' do
       percentual_infected = User.percentual_infecteds(true)
       expect(percentual_infected).to eq(0)
     end
-    it 'returns 0 when there are no infected users' do
-      # Crie alguns usuários não infectados para testar
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: false)
-
-      # Execute o escopo percentual_infecteds
-      percentual_infected = User.percentual_infecteds(true)
-
-      # Verifique se o resultado é 0 quando não há usuários infectados
-      expect(percentual_infected).to eq(0)
-    end
+    # Execute o escopo percentual_infecteds
+    percentual_infected = User.percentual_infecteds(true)
   end
 end

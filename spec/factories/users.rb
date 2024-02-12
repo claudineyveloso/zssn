@@ -7,7 +7,6 @@
 #  contamination_notification :integer          default(0)
 #  gender                     :string(20)       not null
 #  infected                   :boolean          default(FALSE)
-#  is_active                  :boolean          default(TRUE)
 #  latitude                   :string           not null
 #  longitude                  :string           not null
 #  name                       :string(100)      not null
@@ -21,5 +20,6 @@ FactoryBot.define do
     gender { 'Male' }
     latitude { Faker::Address.latitude }
     longitude { Faker::Address.longitude }
+    infected { [true, false].sample }
   end
 end
