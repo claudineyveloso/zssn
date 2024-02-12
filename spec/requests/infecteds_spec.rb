@@ -37,7 +37,7 @@ RSpec.describe Api::V1::InfectedsController, type: :request do
       it 'creates a new Infected record and updates contamination' do
         # expect(Infected).to receive(:find_by).with(user_id_reported: 1, user_id_notified: 2).and_return(nil)
         # expect(Infected).to receive(:create!).with(valid_params).and_return(true)
-        # expect_any_instance_of(ContaminationService).to receive(:update_contamination)
+        # expect_any_instance_of(ContaminationService).to receive(:report_infected)
 
         # post api_v1_infecteds_path, params: valid_params
 
