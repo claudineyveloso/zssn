@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Public: Routes for managing users.
       resources :users, defaults: { format: 'json' } do
+        resources :trades, only: [:create]
         member do
           put :current_location
         end
@@ -17,6 +18,7 @@ Rails.application.routes.draw do
         end
         get 'inventory_items', to: 'inventories#inventory_items'
       end
+      resources :inventory_items, defaults: { format: 'json' }
       resources :items, only: %i[index create destroy], defaults: { format: 'json' }
       resources :infecteds, only: %i[create destroy], defaults: { format: 'json' }
 

@@ -20,4 +20,27 @@ class Inventory < ApplicationRecord
   has_many :inventory_items, dependent: :destroy
   has_many :items, through: :inventory_items
   validates :user_id, presence: true
+
+  def trade_items(other_user)
+    return unless other_user.is_a?(User)
+
+    current_items_score = items.sum(:score)
+    other_items_score = other_user.inventory.items.sum(:score)
+
+    return unless current_items_score == other_items_score
+
+    ActiveRecord::Base.transaction do
+      items.destroy_all
+      other_user.inventory.items.destroy_all
+
+      Item.where(score: current_items_score).each do |item|
+        inventory_items.create(item: item)
+      end
+
+      Item.where(score: other_items_score).each do |item|
+        other_user.inventory.inventory_items.create(item: item)
+      end
+    end
+    true
+  end
 end

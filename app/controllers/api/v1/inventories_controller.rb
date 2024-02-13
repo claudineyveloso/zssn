@@ -31,7 +31,8 @@ module Api
           id: user.id,
           name: user.name,
           gender: user.gender,
-          items: inventory.items
+          items: inventory.inventory_items
+
         },
           code: 200,
           message: "Nemesis informa: Items do inventário do usuário #{user.name}.",
