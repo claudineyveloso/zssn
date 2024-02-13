@@ -2,6 +2,7 @@
 
 module Api
   module V1
+    # class InventoryItemsController
     class InventoryItemsController < ApplicationController
       before_action :set_user
       before_action :set_inventory

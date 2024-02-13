@@ -1,0 +1,61 @@
+### Create user
+POST http://localhost:3000/api/v1/users HTTP/1.1
+Content-Type: application/json
+
+{   
+    "name": "Alexandra Fial",
+    "age": 43,
+    "gender": "Feminino",
+    "latitude": "-19.92337069418504",
+    "longitude": "-43.942577690286285"
+}
+
+### List users
+GET http://localhost:3000/api/v1/users HTTP/1.1
+
+
+### Fetch users
+GET http://localhost:3000/api/v1/users/102
+
+
+### Change location user
+PUT http://localhost:3000/api/v1/users/2/current_location
+{
+  "latitude": "-23.5643034964438",
+  "longitude": "-46.65245026264863"
+}
+
+
+### Create infecteds user 
+POST http://localhost:3000/api/v1/infecteds
+Content-Type: application/json
+
+{
+  "user_id_reported": 40,
+  "user_id_notified": 6
+}
+
+### Create items
+POST http://localhost:3000/api/v1/items
+Content-Type: application/json
+
+{   
+    "description": "Água",
+    "score": 4
+}
+
+### List items
+GET http://localhost:3000/api/v1/items
+
+
+### List inventory_items
+GET http://localhost:3000/api/v1/users/1/inventory_items
+
+### List inventories
+GET http://localhost:3000/api/v1/users/1/inventories
+
+
+### Create inventory items
+POST http://localhost:3000/api/v1/users/1/inventories/1/inventory_items
+Content-Type: application/json
+
