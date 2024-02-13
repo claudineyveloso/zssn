@@ -21,8 +21,8 @@
 #
 FactoryBot.define do
   factory :inventory_item do
-    inventory { nil }
-    item { nil }
-    quantity { 1 }
+    inventory
+    item
+    quantidade { Faker::Number.between(from: 1, to: 10) }
   end
 end
