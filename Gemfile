@@ -59,6 +59,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'rubocop', '~> 1.57'
   gem 'rubocop-minitest', '~> 0.33.0', require: false
+  gem 'rubocop-rails', '~> 2.23', require: false
   gem 'rubocop-rake', '~> 0.6.0', require: false
   gem 'rubocop-shopify', '~> 2.14', require: false
   gem 'rubocop-sorbet', '~> 0.7', require: false
