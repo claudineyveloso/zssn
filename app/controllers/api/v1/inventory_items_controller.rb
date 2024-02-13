@@ -1,24 +1,27 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class InventoryItemsController < ApplicationController
-
       before_action :set_user
       before_action :set_inventory
       before_action :set_inventory_item, only: [:destroy]
 
       def index
         inventory_items = InventoryItem.all
-        render json: { status: :ok, data: { inventory_items: inventory_items } }
+        render json: { status: :ok, data: { inventory_items: } }
       end
 
       def show; end
 
       def create
         @inventory_item = @inventory.inventory_items.build(inventory_item_params)
-        #inventory_item = InventoryItem.create!(inventory_item_params)
-        render json: {
-          data: { inventory_item:, code: 201, message: 'Nemesis informa: Item do inventário cadastrado com sucesso.', status: :success }
-        } if @inventory_item.save
+        # inventory_item = InventoryItem.create!(inventory_item_params)
+        if @inventory_item.save
+          render json: {
+            data: { inventory_item:, code: 201, message: 'Nemesis informa: Item do inventário cadastrado com sucesso.', status: :success }
+          }
+        end
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end

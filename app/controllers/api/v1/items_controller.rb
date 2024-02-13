@@ -6,9 +6,9 @@ module Api
     # In this controller we will only have the create method.
     class ItemsController < ApplicationController
       def index
-        items = Item.all.order(description: :asc)
+        items = Item.order(description: :asc)
         # users = User.all.order(email: :asc)
-        render json: items, status: 200, each_serializer: ItemSerializer
+        render json: items, status: :ok, each_serializer: ItemSerializer
       end
 
       def create

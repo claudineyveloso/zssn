@@ -24,7 +24,7 @@ class User < ApplicationRecord
   scope :percentual_infecteds, lambda { |infected|
     users = count
     infecteds = where(infected:).count
-    percentual = users.zero? ? 0 : (infecteds.to_f / users * 100).round(2)
+    users.zero? ? 0 : (infecteds.to_f / users * 100).round(2)
   }
 
   validates :name,
@@ -57,5 +57,4 @@ class User < ApplicationRecord
   def valid_id_exists?
     errors.add(:base, 'Nemesis informa: ID do usuário não encontrado') unless self.class.exists?(id)
   end
-
 end

@@ -3,10 +3,10 @@
 require 'net/http'
 require 'json'
 api_url = URI.parse('http://localhost:3000/api/v1/users')
-api_url_item = URI.parse('http://localhost:3000/api/v1/item')
+URI.parse('http://localhost:3000/api/v1/item')
 
 def gender_from_name(name)
-  first_name = name.split(' ')[0]
+  first_name = name.split[0]
   last_letter = first_name[-1].downcase == '.' ? first_name[-2].downcase : first_name[-1].downcase
 
   if %w[a e i z].include?(last_letter)
@@ -24,8 +24,8 @@ end
       gender: gender_from_name(random_name),
       latitude: Faker::Address.latitude.to_s,
       longitude: Faker::Address.longitude.to_s,
-      created_at: Faker::Time.between(from: 2.days.ago, to: Time.now),
-      updated_at: Faker::Time.between(from: 2.days.ago, to: Time.now) }
+      created_at: Faker::Time.between(from: 2.days.ago, to: Time.zone.now),
+      updated_at: Faker::Time.between(from: 2.days.ago, to: Time.zone.now) }
   ]
 
   def create_user(api_url, data)
@@ -37,10 +37,10 @@ end
 
     # Verifique se a resposta foi bem-sucedida (código 2xx)
     if response.is_a?(Net::HTTPSuccess)
-      puts 'Usuário cadastrado com sucesso!'
+      Rails.logger.debug 'Usuário cadastrado com sucesso!'
     else
-      puts "Erro ao cadastrar usuário. Código de resposta: #{response.code}"
-      puts "Resposta: #{response.body}"
+      Rails.logger.debug { "Erro ao cadastrar usuário. Código de resposta: #{response.code}" }
+      Rails.logger.debug { "Resposta: #{response.body}" }
     end
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: items
@@ -10,7 +12,7 @@
 #
 FactoryBot.define do
   factory :item do
-    descricao { ['Água', 'Comida', 'Medicamento', 'Munição'].sample }
+    descricao { %w[Água Comida Medicamento Munição].sample }
     score { [4, 3, 2, 1].sample }
   end
 end

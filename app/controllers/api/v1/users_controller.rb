@@ -9,7 +9,7 @@ module Api
       # GET /api/v1/users
       # Returns an JSON displaying all users.
       def index
-        users = User.all.where(infected: false).order(name: :asc)
+        users = User.where(infected: false).order(name: :asc)
         render json: {
           meta: { infecteds: "#{User.percentual_infecteds(true)}%", no_infecteds: "#{User.percentual_infecteds(false)}%" },
           data: { user: users }
@@ -19,11 +19,10 @@ module Api
       def show
         # binding.break
         user = find_user
-        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
+        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
 
         render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: :success }
       end
-
 
       # Public: Create a new user.
       # POST /users
@@ -46,25 +45,23 @@ module Api
       # Returns a user with their updated location
       def current_location
         user = find_user
-        return render json: { "error": 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
+        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
 
         user.update(location_params)
         render json: { data: {
-                        id: user.id,
-                        name: user.name,
-                        age: user.age,
-                        latitude: user.latitude,
-                        longitude: user.longitude,
-                        infected: user.infected,
-                        contamination_notification: user.contamination_notification,
-                        created_at: user.created_at,
-                        updated_at: user.updated_at
-                      },
-                      code: 200,
-                      message: 'Nemesis informa: Localização atualizada com sucesso.',
-                      status: :success
-                    }
-
+                         id: user.id,
+                         name: user.name,
+                         age: user.age,
+                         latitude: user.latitude,
+                         longitude: user.longitude,
+                         infected: user.infected,
+                         contamination_notification: user.contamination_notification,
+                         created_at: user.created_at,
+                         updated_at: user.updated_at
+                       },
+                       code: 200,
+                       message: 'Nemesis informa: Localização atualizada com sucesso.',
+                       status: :success }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end

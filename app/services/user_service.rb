@@ -2,7 +2,7 @@
 
 # class
 class UserService
-  def initialize(user=nil)
+  def initialize(user = nil)
     @user = user
   end
 

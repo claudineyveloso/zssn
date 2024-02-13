@@ -9,9 +9,9 @@ RSpec.describe Api::V1::UsersController, type: :request do
                           infected: false)
       user2 = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
                           infected: false)
-      user3 = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                          infected: true)
-      result = User.all.where(infected: false).order(name: :asc)
+      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
+                  infected: true)
+      result = User.where(infected: false).order(name: :asc)
       expect(result).to eq([user2, user1])
 
       get api_v1_users_path
@@ -38,7 +38,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
       expect(response).to have_http_status(:success)
 
       # Parse the JSON of the response
-      json_response_body = JSON.parse(response.body)
+      json_response_body = response.parsed_body
       user_name = json_response_body['data']['name']
       json_response = {
         'data' => {

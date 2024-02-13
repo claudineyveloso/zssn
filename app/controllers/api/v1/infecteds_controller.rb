@@ -7,7 +7,7 @@ module Api
       def index; end
 
       def create
-        was_reported = Infected.find_by(user_id_reported: params[:user_id_reported], user_id_notified: params[:user_id_notified]).present? ? true : false
+        was_reported = Infected.find_by(user_id_reported: params[:user_id_reported], user_id_notified: params[:user_id_notified]).present?
         return render json: { user_id: params[:user_id_notified], message: 'Nemesis informa: Contaminação deste usuário já foi reportada.' } if was_reported
 
         infected = Infected.create!(infected_params)

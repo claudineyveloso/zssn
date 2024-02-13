@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: inventories
@@ -19,7 +21,6 @@ class Inventory < ApplicationRecord
   belongs_to :user
   has_many :inventory_items, dependent: :destroy
   has_many :items, through: :inventory_items
-  validates :user_id, presence: true
 
   def trade_items(other_user)
     return unless other_user.is_a?(User)
@@ -33,14 +34,28 @@ class Inventory < ApplicationRecord
       items.destroy_all
       other_user.inventory.items.destroy_all
 
-      Item.where(score: current_items_score).each do |item|
-        inventory_items.create(item: item)
+      Item.where(score: current_items_score).find_each do |item|
+        inventory_items.create(item:)
       end
 
-      Item.where(score: other_items_score).each do |item|
-        other_user.inventory.inventory_items.create(item: item)
+      Item.where(score: other_items_score).find_each do |item|
+        other_user.inventory.inventory_items.create(item:)
       end
     end
     true
+  end
+
+  def destroy_all_items
+    inventory_items.destroy_all
+  end
+
+  def add_item(item)
+    item_count = items.count(item)
+    if item_count.positive?
+      inventory_item = inventory_items.find_by(item:)
+      inventory_item.update(quantity: inventory_item.quantity + item_count)
+    else
+      inventory_items.create(item:, quantity: 1)
+    end
   end
 end

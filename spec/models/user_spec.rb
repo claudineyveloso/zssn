@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -111,6 +113,6 @@ RSpec.describe User, type: :model do
       expect(percentual_infected).to eq(0)
     end
     # Execute o escopo percentual_infecteds
-    percentual_infected = User.percentual_infecteds(true)
+    User.percentual_infecteds(true)
   end
 end
