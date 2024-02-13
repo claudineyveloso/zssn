@@ -10,7 +10,7 @@
 #
 FactoryBot.define do
   factory :item do
-    description { 'Medicamento' }
-    score { 2 }
+    descricao { ['Água', 'Comida', 'Medicamento', 'Munição'].sample }
+    score { [4, 3, 2, 1].sample }
   end
 end
