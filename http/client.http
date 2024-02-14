@@ -44,6 +44,10 @@ Content-Type: application/json
     "score": 4
 }
 
+### Delete inventory items
+DELETE /api/v1/users/1/inventories/1
+
+
 ### List items
 GET http://localhost:3000/api/v1/items
 
