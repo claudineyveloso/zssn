@@ -10,18 +10,26 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_items_on_description  (description) UNIQUE
+#
 class Item < ApplicationRecord
   has_many :inventory_items, dependent: :destroy
   has_many :inventories, through: :inventory_items
+
+  opcoes_validas = %w[Água Comida Medicamento Munição]
+
   validates :description,
             presence: true,
             length: { maximum: 20 },
-            inclusion: { in: %w[Água Comida Medicamento Munição],
-                         message: 'Nemesis informa: Descrição inválida para este item!' }
+            uniqueness: true,
+            inclusion: { in: opcoes_validas, message: ->(object, _) { "Nemesis informa: #{object.description} #{I18n.t('errors.messages.inclusion')}. Por favor, escolha entre #{opcoes_validas.join(', ')}" } }
+
   validates :score,
             presence: true,
             numericality: { only_integer: true,
-                            message: 'Nemesis informa: Score não pode ser uma string!' }
+                            message: ->(object, _) { "Nemesis informa: Pontos #{object.score} #{I18n.t('errors.messages.not_a_number')}!" }}
 
   validate :valid_description_with_score, if: -> { %w[Água Comida Medicamento Munição].include?(description) }
 
