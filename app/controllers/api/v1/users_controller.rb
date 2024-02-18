@@ -8,20 +8,20 @@ module Api
       # Public: Display a list of all users.
       # GET /api/v1/users
       # Returns an JSON displaying all users.
-      def index
-        users = User.where(infected: false).order(name: :asc)
-        render json: {
-          meta: { infecteds: "#{User.percentual_infecteds(true)}%", no_infecteds: "#{User.percentual_infecteds(false)}%" },
-          data: { user: users }
-        }, status: :ok
-      end
-
       def show
         # binding.break
         user = find_user
         return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
 
         render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: :success }
+      end
+
+      def infected
+        render json: User.percentual_infecteds(true)
+      end
+
+      def uninfected
+        render json: User.percentual_infecteds(false)
       end
 
       # Public: Create a new user.

@@ -22,11 +22,30 @@ class User < ApplicationRecord
   
 
   scope :infected, ->(id) { where(infected: true, id:) }
-  scope :infecteds, -> { where(infected: true).count }
+  # scope :infecteds, -> { where(infected: true).count }
   scope :percentual_infecteds, lambda { |infected|
     users = count
-    infecteds = where(infected:).count
-    users.zero? ? 0 : (infecteds.to_f / users * 100).round(2)
+    infected_data = where(infected:)
+    infecteds = infected_data.count
+    percentage = users.zero? ? 0 : (infecteds.to_f / users * 100).round(2)
+    infected_users_data = infected_data.map do |user|
+      {
+        name: user.name,
+        age: user.age,
+        gender: user.gender,
+        latitude: user.latitude,
+        longitude: user.longitude,
+        infected: user.infected,
+        contamination_notification: user.contamination_notification
+      }
+    end
+
+    {
+      data: {
+        percentage: "#{sprintf('%.2f', percentage)}%",
+        users: infected_users_data
+      }
+    }
   }
 
   validates :name,

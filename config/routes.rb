@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       resources :items, only: %i[index create], defaults: { format: 'json' }
       resources :infecteds, only: %i[create], defaults: { format: 'json' }
       resources :trades, only: [:update]
+      get '/uninfected', to: 'users#uninfected'
+      get '/infected', to: 'users#infected'
       # Added the route for the check infected action
       get '/check_infected', to: 'infecteds#check_infected'
     end
