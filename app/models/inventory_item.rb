@@ -45,4 +45,8 @@ class InventoryItem < ApplicationRecord
     # average_quantity_per_user.to_json
     { data: { users: users_data } }
   end
+
+  def score_times_quantity
+    item.score * quantity
+  end
 end
