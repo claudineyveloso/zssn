@@ -4,7 +4,7 @@ module Api
   module V1
     # class InventoryItemsController
     class InventoryItemsController < ApplicationController
-      before_action :set_inventory
+      before_action :set_inventory, except: [:items_quantity_average]
 
       def index
         inventory_items = InventoryItem.includes(:item)
@@ -14,7 +14,7 @@ module Api
 
       def create
         user = User.infected(params[:user_id])
-        if user
+        if user.present?
           return render json: {
             data: {
               user:
@@ -50,6 +50,10 @@ module Api
         render json: { message: 'Nemesis informa: Item do inventário excluído com sucesso!' }
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: 'ID não foi encontrado.' }, status: :not_found
+      end
+
+      def items_quantity_average
+        render json: InventoryItem.average_quantity_per_user
       end
 
       private
