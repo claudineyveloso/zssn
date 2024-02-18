@@ -10,6 +10,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_items_on_description  (description) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do

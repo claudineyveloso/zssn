@@ -10,6 +10,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_items_on_description  (description) UNIQUE
+#
 FactoryBot.define do
   factory :item do
     descricao { %w[Água Comida Medicamento Munição].sample }
