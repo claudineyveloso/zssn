@@ -5,23 +5,19 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Public: Routes for managing users.
-      resources :users, defaults: { format: 'json' } do
+      resources :users, only: %i[show create index], defaults: { format: 'json' } do
         resources :trades, only: [:create]
         member do
           put :current_location
         end
-        resources :inventories, only: %i[index create destroy], defaults: { format: 'json' } do
-          collection do
-            put :item_exchange, path: '/item_exchange/user_receiver/:user_receiver_id'
-            # /api/v1/users/1/inventories/item_exchange/user_receiver/2
-          end
+        resources :inventories, only: %i[show create index], defaults: { format: 'json' } do
+          # resources :inventory_items, only: %i[index , create, destroy], defaults: { format: 'json' }
+          resources :inventory_items, only: %i[index create destroy], defaults: { format: 'json' }
         end
-        get 'inventory_items', to: 'inventories#inventory_items'
       end
-      resources :inventory_items, defaults: { format: 'json' }
-      resources :items, only: %i[index create destroy], defaults: { format: 'json' }
-      resources :infecteds, only: %i[create destroy], defaults: { format: 'json' }
-
+      resources :items, only: %i[index create], defaults: { format: 'json' }
+      resources :infecteds, only: %i[create], defaults: { format: 'json' }
+      resources :trades, only: [:update]
       # Added the route for the check infected action
       get '/check_infected', to: 'infecteds#check_infected'
     end

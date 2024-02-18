@@ -10,6 +10,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_items_on_description  (description) UNIQUE
+#
 class ItemSerializer < ActiveModel::Serializer
   attributes :id,
              :description,

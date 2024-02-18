@@ -10,6 +10,7 @@ Layout/LineLength:
   Max: 200
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.2.2
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
