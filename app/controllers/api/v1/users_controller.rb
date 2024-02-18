@@ -24,6 +24,10 @@ module Api
         render json: User.percentual_infecteds(false)
       end
 
+      def lost_score
+        render json: User.lost_score
+      end
+
       # Public: Create a new user.
       # POST /users
       # user_params - Strong parameters for creating a user, typically
