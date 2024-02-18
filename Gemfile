@@ -59,6 +59,7 @@ group :development do
   gem 'annotate', '~> 3.2'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'rails_best_practices', '~> 1.23', '>= 1.23.2'
   gem 'rubocop', '~> 1.57'
   gem 'rubocop-minitest', '~> 0.33.0', require: false
   gem 'rubocop-rails', '~> 2.23', require: false
