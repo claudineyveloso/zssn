@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get '/uninfected', to: 'users#uninfected'
       get '/infected', to: 'users#infected'
       get '/items_quantity_average', to: 'inventory_items#items_quantity_average'
+      get '/lost_score', to: 'users#lost_score'
       # Added the route for the check infected action
       get '/check_infected', to: 'infecteds#check_infected'
     end
