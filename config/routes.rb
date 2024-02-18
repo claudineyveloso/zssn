@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Public: Routes for managing users.
-      resources :users, only: %i[show create index], defaults: { format: 'json' } do
+      resources :users, only: %i[show create], defaults: { format: 'json' } do
         resources :trades, only: [:create]
         member do
           put :current_location
@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :trades, only: [:update]
       get '/uninfected', to: 'users#uninfected'
       get '/infected', to: 'users#infected'
+      get '/items_quantity_average', to: 'inventory_items#items_quantity_average'
       # Added the route for the check infected action
       get '/check_infected', to: 'infecteds#check_infected'
     end
