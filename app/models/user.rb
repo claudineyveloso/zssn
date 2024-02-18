@@ -18,6 +18,7 @@
 class User < ApplicationRecord
   has_one :inventory, dependent: :destroy
   has_many :inventory_items, through: :inventory
+  delegate :inventory_items, to: :inventory
   has_many :reporteds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_reported'
   has_many :notifieds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_notified'
   
@@ -72,6 +73,24 @@ class User < ApplicationRecord
 
   def create_inventory
     Inventory.create(user: self)
+  end
+
+  def self.lost_score
+    infected = where(infected: true)
+    user_data = []
+    infected.each do |user|
+      total_score = user.inventory_items.sum(&:score_times_quantity)
+      user_data << { name: user.name,
+                     age: user.age,
+                     gender: user.gender,
+                     latitude: user.latitude,
+                     longitude: user.longitude,
+                     infected: user.infected,
+                     contamination_notification: user.contamination_notification,
+                     score: total_score }
+    end
+
+    { data: { users: user_data } }
   end
 
   private
