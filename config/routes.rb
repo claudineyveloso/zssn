@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       end
       resources :items, only: %i[index create], defaults: { format: 'json' }
       resources :infecteds, only: %i[create], defaults: { format: 'json' }
-      resources :trades, only: [:update]
+      put '/trades', to: 'trades#create'
       get '/uninfected', to: 'users#uninfected'
       get '/infected', to: 'users#infected'
       get '/items_quantity_average', to: 'inventory_items#items_quantity_average'
