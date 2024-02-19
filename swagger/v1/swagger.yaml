@@ -52,6 +52,54 @@ paths:
           description: user found
         '404':
           description: user not found
+  "/api/v1/infected":
+    get:
+      summary: Returns the percentage of infected users
+      tags:
+      - Infected
+      responses:
+        '200':
+          description: Returns the percentage of infected users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      percentage:
+                        type: string
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            age:
+                              type: integer
+                            gender:
+                              type: string
+                            latitude:
+                              type: string
+                            longitude:
+                              type: string
+                            infected:
+                              type: boolean
+                            contamination_notification:
+                              type: integer
+                          required:
+                          - name
+                          - age
+                          - gender
+                          - latitude
+                          - longitude
+                          - infected
+                          - contamination_notification
+                    required:
+                    - percentage
+                    - users
 servers:
 - url: https://{defaultHost}
   variables:

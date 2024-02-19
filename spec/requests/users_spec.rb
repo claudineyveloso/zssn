@@ -45,5 +45,42 @@ RSpec.describe Api::V1::UsersController, type: :request do
         run_test!
       end
     end
+
+    path '/api/v1/infected' do
+      get 'Returns the percentage of infected users' do
+        tags 'Infected'
+        produces 'application/json'
+
+        response '200', 'Returns the percentage of infected users' do
+          schema type: :object,
+                 properties: {
+                   data: {
+                     type: :object,
+                     properties: {
+                       percentage: { type: :string },
+                       users: {
+                         type: :array,
+                         items: {
+                           type: :object,
+                           properties: {
+                             name: { type: :string },
+                             age: { type: :integer },
+                             gender: { type: :string },
+                             latitude: { type: :string },
+                             longitude: { type: :string },
+                             infected: { type: :boolean },
+                             contamination_notification: { type: :integer }
+                           },
+                           required: %w[name age gender latitude longitude infected contamination_notification]
+                         }
+                       }
+                     },
+                     required: %w[percentage users]
+                   }
+                 }
+          run_test!
+        end
+      end
+    end
   end
 end
