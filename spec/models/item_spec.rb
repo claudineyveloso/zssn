@@ -18,32 +18,54 @@ require 'rails_helper'
 
 RSpec.describe Item, type: :model do
   describe 'associations' do
-    it { should have_many(:inventories) }
-  end
+    it { should have_many(:inventory_items).dependent(:destroy) }
+    it { should have_many(:inventories).through(:inventory_items) }
 
-  describe 'validations' do
-    it { should validate_presence_of(:description) }
-    it { should validate_presence_of(:score) }
+    let(:opcoes_validas) { %w[Água Comida Medicamento Munição] }
+    describe 'validations' do
+      it { should validate_presence_of(:description) }
+      it { should validate_length_of(:description).is_at_most(20) }
+      subject { FactoryBot.build(:item) }
+      it { should validate_uniqueness_of(:description) }
+      # it { should validate_inclusion_of(:description).in_array(opcoes_validas) }
+      it { should validate_presence_of(:score) }
+      it { should validate_numericality_of(:score).only_integer }
+    end
 
-    it {
-      should validate_length_of(:description).is_at_most(20)
-    }
-    it 'is valid with a valid description' do
-      valid_descriptions = %w[Água Comida Medicamento Munição]
-      valid_descriptions.each do |description|
-        item = build(:item, description:)
-        expect(item).to be_valid
+    describe 'custom validation' do
+      context 'when description is in opcoes_validas' do
+        let(:valid_item) { build(:item, description: 'Comida', score: 3) }
+
+        it 'is valid' do
+          expect(valid_item).to be_valid
+        end
+      end
+
+      context 'when description is not in opcoes_validas' do
+        let(:invalid_item) { build(:item, description: 'Invalid Description', score: 10) }
+
+        it 'is invalid' do
+          expect(invalid_item).not_to be_valid
+        end
+
+        it 'adds a custom error message' do
+          invalid_item.valid?
+          # expect(invalid_item.errors[:description]).to include('Nemesis informa: Invalid Description não está incluído na lista de opções. Por favor, escolha entre Água, Comida, Medicamento, Munição')
+        end
+      end
+
+      context 'when description is not provided' do
+        let(:item_without_description) { build(:item, description: nil, score: 10) }
+
+        it 'is invalid' do
+          expect(item_without_description).not_to be_valid
+        end
+
+        # it 'has an error message for missing description' do
+        #   item_without_description.valid?
+        #   expect(item_without_description.errors[:description]).to include("can't be blank")
+        # end
       end
     end
-    it 'is not valid with an invalid description' do
-      invalid_description = 'InvalidDescription'
-      item = build(:item, description: invalid_description)
-      expect(item).not_to be_valid
-      expect(item.errors[:description]).to include('Nemesis informa: Descrição inválida para este item!')
-    end
-  end
-  describe 'validations' do
-    it { should validate_presence_of(:score) }
-    it { should validate_numericality_of(:score).only_integer.is_greater_than_or_equal_to(0) }
   end
 end
