@@ -18,14 +18,8 @@ require 'rails_helper'
 
 RSpec.describe Infected, type: :model do
   describe 'associations' do
-    it { should belong_to(:user) }
+    it 'belongs to a notified user' do
+      should belong_to(:user).class_name('User').with_foreign_key('user_id_notified')
+    end
   end
-
-  # let(:infected) { FactoryGirl.create(:infected) }
-  # it { is_expected.to be_valid }
-
-  # it 'creates a record' do
-  #   Infected.create(user_id_reported: 1, user_id_notified: 2)
-  #   expect(Infected.count).to eq(1)
-  # end
 end
