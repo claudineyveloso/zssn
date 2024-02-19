@@ -21,12 +21,20 @@ require 'rails_helper'
 
 RSpec.describe Inventory, type: :model do
   describe 'Associations' do
-    it { should belong_to(:user) }
-    it { should belong_to(:item) }
+    it 'belongs to a user' do
+      should belong_to(:user)
+    end
+
+    it 'has many inventory items' do
+      should have_many(:inventory_items).dependent(:destroy)
+    end
+
+    it 'There are many items through inventory_items' do
+      should have_many(:items).through(:inventory_items)
+    end
   end
 
   describe 'Validations' do
     it { should validate_presence_of(:user_id) }
-    it { should validate_presence_of(:item_id) }
   end
 end
