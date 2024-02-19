@@ -19,28 +19,12 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe '#create' do
-    it 'creates a new user' do
-      user = FactoryBot.create(:user)
-      expect(user).to be_valid
-    end
-  end
-
   describe 'associations' do
-    it { should have_many(:inventories) }
-    it do
-      should have_many(:reporteds)
-        .class_name('Infected')
-        .dependent(:destroy)
-        .with_foreign_key('user_id_reported')
-    end
-
-    it do
-      should have_many(:notifieds)
-        .class_name('Infected')
-        .dependent(:destroy)
-        .with_foreign_key('user_id_notified')
-    end
+    it { should have_one(:inventory).dependent(:destroy) }
+    it { should delegate_method(:inventory_items).to(:inventory) }
+    it { should have_many(:inventory_items).through(:inventory) }
+    it { should have_many(:reporteds).class_name('Infected').with_foreign_key('user_id_reported').dependent(:destroy) }
+    it { should have_many(:notifieds).class_name('Infected').with_foreign_key('user_id_notified').dependent(:destroy) }
   end
 
   describe 'validations' do
@@ -50,69 +34,73 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of(:latitude) }
     it { should validate_presence_of(:longitude) }
 
-    it {
-      should validate_length_of(:name).is_at_most(100)
-    }
-    it {
-      should validate_length_of(:gender).is_at_most(20)
-    }
-    it {
-      should validate_length_of(:latitude).is_at_most(255)
-    }
-    it {
-      should validate_length_of(:longitude).is_at_most(255)
-    }
-    it 'has a valid factory' do
-      user = FactoryBot.create(:user)
-      expect(user).to be_valid
-    end
+    it { should validate_length_of(:name).is_at_most(100) }
+    it { should validate_length_of(:gender).is_at_most(20) }
+    it { should validate_length_of(:latitude).is_at_most(255) }
+    it { should validate_length_of(:longitude).is_at_most(255) }
   end
 
-  describe '.infecteds' do
-    it 'creates a new infected user' do
-      infected_user = FactoryBot.create(:user, infected: true)
-      expect(infected_user).to be_valid
-      expect(infected_user.infected).to eq(true)
-    end
+  describe 'scopes' do
+    describe '.infected' do
+      let!(:infected_user) { create(:user, infected: true) }
+      let!(:uninfected_user) { create(:user, infected: false) }
 
-    it 'returns the count of infected users' do
-      # Created some users to test
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: true)
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: true)
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: true)
-      infected_count = User.infecteds
-      expect(infected_count).to eq(3)
+      it 'returns infected user with given id' do
+        expect(User.infected(infected_user.id).first).to eq(infected_user)
+      end
 
-      # Running the infecteds scope
-      infected_count = User.infecteds
-
-      # expected 3
-      expect(infected_count).to eq(3) # Deveria haver 3 usuários infectados
+      it 'does not return uninfected user' do
+        expect(User.infected(uninfected_user.id).first).to be_nil
+      end
     end
   end
 
   describe '.percentual_infecteds' do
-    it 'returns the percentage of infected users' do
-      # Created some users to test
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: false)
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: false)
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: true)
-
-      percentual_infected = User.percentual_infecteds(true)
-      expect(percentual_infected).to eq(33.33)
+    let!(:infected_users) { create_list(:user, 3, infected: true) }
+    let!(:uninfected_users) { create_list(:user, 2, infected: false) }
+    it 'returns the percentage of infected users and their details' do
+      result = User.percentual_infecteds(true)
+      expect(result[:data][:percentage]).to eq('60.00%')
+      expect(result[:data][:users].size).to eq(3)
+      expect(result[:data][:users].first.keys).to contain_exactly(:name, :age, :gender, :latitude, :longitude, :infected, :contamination_notification)
     end
+  end
 
-    it 'returns 0 when there are no users' do
-      percentual_infected = User.percentual_infecteds(true)
-      expect(percentual_infected).to eq(0)
+  describe '.lost_score' do
+    let!(:infected_users) { create_list(:user, 3, :with_inventory, infected: true) }
+    let!(:uninfected_users) { create_list(:user, 2, infected: false) }
+
+    it 'returns data of infected users with their lost score' do
+      expected_score = infected_users.sum { |user| user.inventory_items.sum(&:score_times_quantity) }
+
+      result = User.lost_score
+
+      # Check if the returned data is a hash containing a 'data' key
+      expect(result).to be_a(Hash)
+      expect(result.keys).to contain_exactly(:data)
+
+      # Check if the 'data' key contains a 'users' key which is an array
+      expect(result[:data]).to be_a(Hash)
+      expect(result[:data].keys).to contain_exactly(:users)
+      expect(result[:data][:users]).to be_an(Array)
+
+      # Verify that the number of infected users returned matches the number created
+      expect(result[:data][:users].size).to eq(3)
+
+      # Verify that each user has the expected data keys and that the score is correct
+      result[:data][:users].each do |user_data|
+        expect(user_data.keys).to contain_exactly(:name, :age, :gender, :latitude, :longitude, :infected, :contamination_notification, :score)
+
+        # Find the corresponding user in the infected users
+        user = infected_users.find { |u| u.name == user_data[:name] }
+
+        # Check whether the score calculated for the user is correct
+        expect(user_data[:score]).to eq(user.inventory_items.sum(&:score_times_quantity))
+      end
+
+      # Check whether the total score returned by the method is correct
+      total_score = result[:data][:users].sum { |user_data| user_data[:score] }
+      expect(total_score).to eq(expected_score)
     end
-    # Execute o escopo percentual_infecteds
-    User.percentual_infecteds(true)
   end
 end

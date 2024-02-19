@@ -22,6 +22,16 @@ FactoryBot.define do
     gender { 'Male' }
     latitude { Faker::Address.latitude }
     longitude { Faker::Address.longitude }
-    infected { [true, false].sample }
+    infected { false }
+
+    trait :infected_user do
+      infected { true }
+    end
+
+    trait :with_inventory do
+      after(:create) do |user|
+        create(:inventory, user:)
+      end
+    end
   end
 end

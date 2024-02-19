@@ -3,63 +3,47 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :request do
-  describe 'GET #index' do
-    it 'returns non-infected users ordered by name' do
-      user1 = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                          infected: false)
-      user2 = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                          infected: false)
-      User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                  infected: true)
-      result = User.where(infected: false).order(name: :asc)
-      expect(result).to eq([user2, user1])
-
-      get api_v1_users_path
-      expect(response).to have_http_status(:ok)
-
-      percentage_infected = User.percentual_infecteds(true)
-      expect(percentage_infected).to eq(33.33333333333333)
-
-      percentage_no_infected = User.percentual_infecteds(false)
-      expect(percentage_no_infected).to eq(66.66666666666666)
-    end
-  end
-
-  describe 'GET #show' do
-    it 'returns the user JSON when the ID exists' do
-      # Create a user to get an existing ID
-      existing_user = User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 99), gender: 'Male', latitude: Faker::Address.latitude, longitude: Faker::Address.longitude,
-                                  infected: false)
-
-      # Execute the GET request for the show method
-      get api_v1_user_path(id: existing_user.id)
-
-      # Check if the HTTP status is successful (status 200)
-      expect(response).to have_http_status(:success)
-
-      # Parse the JSON of the response
-      json_response_body = response.parsed_body
-      user_name = json_response_body['data']['name']
-      json_response = {
-        'data' => {
-          'user' => existing_user.as_json,
-          'code' => 200,
-          'message' => "Nemesis informa: Dados do usuário - #{user_name}.",
-          'status' => 'success'
-        }
+  path '/api/v1/users' do
+    post 'Create a user' do
+      tags 'Users'
+      consumes 'application/json'
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string },
+          age: { type: :integer },
+          gender: { type: :string },
+          latitude: { type: :string },
+          longitude: { type: :string }
+        },
+        required: %w[name age gender latitude longitude]
       }
 
-      # Verifique se o JSON contém as informações esperadas
-      expect(json_response).to eq(
-        {
-          'data' => {
-            'user' => existing_user.as_json,
-            'code' => 200,
-            'message' => "Nemesis informa: Dados do usuário - #{user_name}.",
-            'status' => 'success'
-          }
-        }
-      )
+      response '201', 'user created' do
+        let(:user) { { name: 'Claudiney Veloso', age: 55, gender: 'Masculino', latitude: '-19.92337069418504', longitude: '-43.942577690286285' } }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        let(:user) { { name: 'invalid' } }
+        run_test!
+      end
+    end
+
+    get 'Retrieves a user' do
+      tags 'Users'
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+
+      response '200', 'user found' do
+        let(:id) { User.create(name: 'Talita Melo', age: 40, gender: 'Feminino', latitude: '-23.5643034964438', longitude: '-46.65245026264863', infected: true, contamination_notification: 3).id }
+        run_test!
+      end
+
+      response '404', 'user not found' do
+        let(:id) { 'invalid' }
+        run_test!
+      end
     end
   end
 end

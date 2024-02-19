@@ -15,6 +15,7 @@ class Trade
             :receiver_items,
             presence: true
   validate :validate_trade
+
   def execute_trade
     add_items(giver_id, receiver_items)
     remove_items(receiver_id, receiver_items)
