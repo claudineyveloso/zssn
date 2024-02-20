@@ -1,78 +1,36 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe Api::V1::InfectedsController, type: :request do
-  describe '#check_infected' do
-    # it 'returns true when Infected record is present' do
-    #   # Suponha que você tenha um registro existente no banco de dados com os parâmetros fornecidos
-    #   infected = Infected.create(user_id_reported: 1, user_id_notified: 2)
+RSpec.describe 'Infecteds API', type: :request do
+  path '/api/v1/infecteds' do
+    post 'Creates a new infected user record' do
+      tags 'Infecteds'
+      consumes 'application/json'
+      produces 'application/json'
 
-    #   # puts '################################################################'
-    #   # puts infected.user_id_reported
-    #   # puts '################################################################'
+      parameter name: :user_id_reported, in: :body, schema: {
+        type: :object,
+        properties: {
+          user_id_reported: { type: :integer },
+          user_id_notified: { type: :integer }
+        },
+        required: %w[user_id_reported user_id_notified]
+      }
 
-    #   # Simule a chamada do método no controlador
-    #   get api_v1_check_infected_path, params: { user_id_reported: infected.user_id_reported, user_id_notified: infected.user_id_notified }
-    #   puts '################################################################'
-    #   puts response.body
-    #   puts '################################################################'
-    #   # Verifique se o resultado da lógica é verdadeiro
-    #   expect(response.body).to eq({ result: true }.to_json)
-    # end
-  end
+      response '200', 'Infected user successfully registered' do
+        let(:user_id_reported) { create(:user).id }
+        let(:user_id_notified) { create(:user).id }
 
-  # it 'returns false when Infected record is not present' do
-  #   # Simule a chamada do método no controlador com parâmetros para os quais não há registro no banco de dados
-  #   get api_v1_check_infected_path, params: { user_id_reported: 1, user_id_notified: 4 }
+        run_test!
+      end
 
-  #   # Verifique se o resultado da lógica é falso
-  #   expect(response.body).to eq({ result: false }.to_json)
-  # end
+      response '422', 'Validation error' do
+        let(:user_id_reported) { nil }
+        let(:user_id_notified) { nil }
 
-  describe 'POST #create' do
-    let(:valid_params) { { user_id_reported: 1, user_id_notified: 2 } }
-
-    context 'when user contamination was not reported before' do
-      it 'creates a new Infected record and updates contamination' do
-        # expect(Infected).to receive(:find_by).with(user_id_reported: 1, user_id_notified: 2).and_return(nil)
-        # expect(Infected).to receive(:create!).with(valid_params).and_return(true)
-        # expect_any_instance_of(ContaminationService).to receive(:report_infected)
-
-        # post api_v1_infecteds_path, params: valid_params
-
-        # expect(response).to have_http_status(:success)
-        # # puts '################################################################'
-        # # puts response
-        # # puts '################################################################'
-
-        # expect(JSON.parse(response.body)['status']['code']).to eq(200)
+        run_test!
       end
     end
-
-    # context 'when user contamination was reported before' do
-    #   it 'returns a JSON response indicating contamination already reported' do
-    #     expect(Infected).to receive(:find_by).with(user_id_reported: 1, user_id_notified: 2).and_return(double('Infected'))
-
-    #     post api_v1_infecteds_path, params: valid_params
-
-    #     expect(response).to have_http_status(:success)
-    #     expect(JSON.parse(response.body)['status']['code']).to eq(200)
-    #     expect(JSON.parse(response.body)['message']).to include('Nemesis informa: Contaminação deste usuário já foi reportada.')
-    #   end
-    # end
-
-    # context 'when an error occurs during Infected creation' do
-    #   it 'returns a JSON response indicating an error' do
-    #     expect(Infected).to receive(:find_by).with(user_id_reported: 1, user_id_notified: 2).and_return(nil)
-    #     expect(Infected).to receive(:create!).with(valid_params).and_raise(ActiveRecord::RecordInvalid.new(Infected.new))
-
-    #     post api_v1_infecteds_path, params: valid_params
-
-    #     expect(response).to have_http_status(:error)
-    #     expect(JSON.parse(response.body)['status']['code']).to eq(500)
-    #     expect(JSON.parse(response.body)['status']['errors']).not_to be_empty
-    #   end
-    # end
   end
 end

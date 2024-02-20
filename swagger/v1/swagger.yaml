@@ -4,6 +4,30 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/v1/infecteds":
+    post:
+      summary: Creates a new infected user record
+      tags:
+      - Infecteds
+      parameters: []
+      responses:
+        '200':
+          description: Infected user successfully registered
+        '422':
+          description: Validation error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id_reported:
+                  type: integer
+                user_id_notified:
+                  type: integer
+              required:
+              - user_id_reported
+              - user_id_notified
   "/api/v1/users":
     post:
       summary: Create a user
