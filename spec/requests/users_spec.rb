@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'swagger_helper'
 
 RSpec.describe Api::V1::UsersController, type: :request do
   path '/api/v1/users' do
@@ -70,12 +70,10 @@ RSpec.describe Api::V1::UsersController, type: :request do
                              longitude: { type: :string },
                              infected: { type: :boolean },
                              contamination_notification: { type: :integer }
-                           },
-                           required: %w[name age gender latitude longitude infected contamination_notification]
+                           }
                          }
                        }
-                     },
-                     required: %w[percentage users]
+                     }
                    }
                  }
           run_test!
@@ -107,14 +105,84 @@ RSpec.describe Api::V1::UsersController, type: :request do
                              longitude: { type: :string },
                              infected: { type: :boolean },
                              contamination_notification: { type: :integer }
-                           },
-                           required: %w[name age gender latitude longitude infected contamination_notification]
+                           }
                          }
                        }
-                     },
-                     required: %w[percentage users]
+                     }
                    }
                  }
+          run_test!
+        end
+      end
+    end
+
+    path '/api/v1/lost_score' do
+      get 'Returns the lost score of infected users' do
+        tags 'Lost Score'
+        produces 'application/json'
+
+        response '200', 'Returns the lost score of infected users' do
+          schema type: :object,
+                 properties: {
+                   data: {
+                     type: :object,
+                     properties: {
+                       users: {
+                         type: :array,
+                         items: {
+                           type: :object,
+                           properties: {
+                             name: { type: :string },
+                             age: { type: :integer },
+                             gender: { type: :string },
+                             latitude: { type: :string },
+                             longitude: { type: :string },
+                             infected: { type: :boolean },
+                             contamination_notification: { type: :integer },
+                             score: { type: :integer }
+                           }
+                         }
+                       }
+                     }
+                   }
+                 }
+
+          run_test!
+        end
+      end
+    end
+
+    path '/api/v1/users/{id}/current_location' do
+      parameter name: 'id', in: :path, type: :integer, required: true
+      parameter name: :latitude, in: :query, type: :string, description: 'Latitude of new location'
+      parameter name: :longitude, in: :query, type: :string, description: 'Longitude of new location'
+
+      put 'Updates the users current location' do
+        tags 'Users'
+        produces 'application/json'
+        consumes 'application/json'
+
+        response '200', 'Location updated successfully' do
+          let(:id) { create(:user).id }
+          let(:latitude) { '-19.92337069418504' }
+          let(:longitude) { '-43.942577690286285' }
+
+          run_test!
+        end
+
+        response '404', 'User ID not found' do
+          let(:id) { 'invalid_id' }
+          let(:latitude) { '-19.92337069418504' }
+          let(:longitude) { '-43.942577690286285' }
+
+          run_test!
+        end
+
+        response '422', 'Validation error' do
+          let(:id) { create(:user).id }
+          let(:latitude) { nil }
+          let(:longitude) { nil }
+
           run_test!
         end
       end

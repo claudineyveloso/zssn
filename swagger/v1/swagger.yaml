@@ -89,17 +89,6 @@ paths:
                               type: boolean
                             contamination_notification:
                               type: integer
-                          required:
-                          - name
-                          - age
-                          - gender
-                          - latitude
-                          - longitude
-                          - infected
-                          - contamination_notification
-                    required:
-                    - percentage
-                    - users
   "/api/v1/uninfected":
     get:
       summary: Returns the percentage of uninfected users
@@ -137,17 +126,71 @@ paths:
                               type: boolean
                             contamination_notification:
                               type: integer
-                          required:
-                          - name
-                          - age
-                          - gender
-                          - latitude
-                          - longitude
-                          - infected
-                          - contamination_notification
-                    required:
-                    - percentage
-                    - users
+  "/api/v1/lost_score":
+    get:
+      summary: Returns the lost score of infected users
+      tags:
+      - Lost Score
+      responses:
+        '200':
+          description: Returns the lost score of infected users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            age:
+                              type: integer
+                            gender:
+                              type: string
+                            latitude:
+                              type: string
+                            longitude:
+                              type: string
+                            infected:
+                              type: boolean
+                            contamination_notification:
+                              type: integer
+                            score:
+                              type: integer
+  "/api/v1/users/{id}/current_location":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: latitude
+      in: query
+      description: Latitude of new location
+      schema:
+        type: string
+    - name: longitude
+      in: query
+      description: Longitude of new location
+      schema:
+        type: string
+    put:
+      summary: Updates the users current location
+      tags:
+      - Users
+      responses:
+        '200':
+          description: Location updated successfully
+        '404':
+          description: User ID not found
+        '422':
+          description: Validation error
 servers:
 - url: https://{defaultHost}
   variables:
