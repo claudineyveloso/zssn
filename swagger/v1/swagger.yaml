@@ -100,6 +100,54 @@ paths:
                     required:
                     - percentage
                     - users
+  "/api/v1/uninfected":
+    get:
+      summary: Returns the percentage of uninfected users
+      tags:
+      - Uninfected
+      responses:
+        '200':
+          description: Returns the percentage of uninfected users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      percentage:
+                        type: string
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            age:
+                              type: integer
+                            gender:
+                              type: string
+                            latitude:
+                              type: string
+                            longitude:
+                              type: string
+                            infected:
+                              type: boolean
+                            contamination_notification:
+                              type: integer
+                          required:
+                          - name
+                          - age
+                          - gender
+                          - latitude
+                          - longitude
+                          - infected
+                          - contamination_notification
+                    required:
+                    - percentage
+                    - users
 servers:
 - url: https://{defaultHost}
   variables:
