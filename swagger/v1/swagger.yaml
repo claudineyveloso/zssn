@@ -28,6 +28,38 @@ paths:
               required:
               - user_id_reported
               - user_id_notified
+  "/api/v1/non_existent_route":
+    get:
+      summary: Returns 404 when the route does not exist
+      tags:
+      - Non-existent Route
+      responses:
+        '404':
+          description: Route not found
+  "/api/v1/items":
+    post:
+      summary: Create a new inventory item
+      tags:
+      - Items
+      parameters: []
+      responses:
+        '201':
+          description: Inventory item registered successfully
+        '422':
+          description: Validation error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                score:
+                  type: integer
+              required:
+              - description
+              - score
   "/api/v1/users":
     post:
       summary: Create a user

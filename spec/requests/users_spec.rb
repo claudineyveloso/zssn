@@ -20,7 +20,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
       }
 
       response '201', 'user created' do
-        let(:user) { { name: 'Claudiney Veloso', age: 55, gender: 'Masculino', latitude: '-19.92337069418504', longitude: '-43.942577690286285' } }
+        let(:user) { { name: 'Michael Jackson', age: 55, gender: 'Masculino', latitude: '-19.92337069418504', longitude: '-43.942577690286285' } }
         run_test!
       end
 
