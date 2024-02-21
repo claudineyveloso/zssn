@@ -6,12 +6,8 @@ module Api
     # In this controller we will only have the create and destroy method.
     class InventoriesController < ApplicationController
       def index
-        user = User.find(params[:user_id])
-        inventories = Inventory.where(user_id: user.id).map { |u| u.as_json.merge(user:) }
-
-        render json: {
-          data: { inventory: inventories }
-        }, status: :ok
+        inventories = Inventory.includes(:user)
+        render json: inventories, each_serializer: InventorySerializer
       end
 
       def create
