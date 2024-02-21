@@ -21,7 +21,6 @@ class User < ApplicationRecord
   delegate :inventory_items, to: :inventory
   has_many :reporteds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_reported'
   has_many :notifieds, class_name: 'Infected', dependent: :destroy, foreign_key: 'user_id_notified'
-  
 
   scope :infected, ->(id) { where(infected: true, id:) }
   # scope :infecteds, -> { where(infected: true).count }
@@ -44,7 +43,7 @@ class User < ApplicationRecord
 
     {
       data: {
-        percentage: "#{sprintf('%.2f', percentage)}%",
+        percentage: "#{format('%.2f', percentage)}%",
         users: infected_users_data
       }
     }
@@ -73,6 +72,10 @@ class User < ApplicationRecord
 
   def create_inventory
     Inventory.create(user: self)
+  end
+
+  def self.infected?(user_id)
+    users = infected(user_id)
   end
 
   def self.lost_score
