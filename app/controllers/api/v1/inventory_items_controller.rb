@@ -9,11 +9,10 @@ module Api
       def index
         inventory_items = InventoryItem.includes(:item)
         render json: { status: :ok, data: { inventory_items: ActiveModel::Serializer::CollectionSerializer.new(inventory_items, each_serializer: InventoryItemSerializer) } }
-
       end
 
       def create
-        user = User.infected(params[:user_id])
+        user = User.infected?(params[:user_id])
         if user.present?
           return render json: {
             data: {
@@ -27,9 +26,27 @@ module Api
           render json: { error: 'Nemesis informa: Item não encontrado!' }, status: :not_found
           return
         end
-        inventory_item = InventoryItem.create!(inventory_item_params)
+        check_item = InventoryItem.includes(:inventory)
+                                  .find_by(inventory: { id: params[:user_id].to_i }, item_id: item.id)
+        if check_item.present?
+          sum_quantity = check_item.quantity + params[:quantity]
+          inventory_item = InventoryItem.where(
+            inventory_id: params[:inventory_id].to_i,
+            item: params[:item_id]
+          ).update(quantity: sum_quantity)
+          message = 'Quantidade do item atualizada com sucesso no inventário.'
+        else
+          inventory_item = InventoryItem.create!(inventory_item_params)
+          message = 'Item cadastrado com sucesso no inventário.'
+        end
+
         render json: {
-          data: { inventory_item:, serializer: InventoryItemSerializer, code: 201, message: 'Nemesis informa: Item cadastrado com sucesso no inventário.', status: :success }
+          data: {
+            inventory_item:,
+            code: 201,
+            message: "Nemesis informa: #{message}",
+            status: :success
+          }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
