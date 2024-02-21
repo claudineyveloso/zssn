@@ -86,7 +86,7 @@ module Api
         inventory_item.destroy
         render json: { message: 'Nemesis informa: Item do inventário excluído com sucesso!' }
       rescue ActiveRecord::RecordNotFound => e
-        render json: { error: 'ID não foi encontrado.' }, status: :not_found
+        render json: { error: 'Nemesis informa: ID não foi encontrado.' }, status: :not_found
       end
 
       def items_quantity_average
