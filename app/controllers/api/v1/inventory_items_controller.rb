@@ -4,7 +4,7 @@ module Api
   module V1
     # class InventoryItemsController
     class InventoryItemsController < ApplicationController
-      before_action :set_inventory, except: [:items_quantity_average]
+      before_action :set_inventory, only: [:destroy]
 
       def index
         inventory_items = InventoryItem.includes(:item)
@@ -12,7 +12,17 @@ module Api
       end
 
       def create
-        user = User.infected?(params[:user_id])
+        inventory = Inventory.find_by(id: params[:inventory_id])
+        if inventory.nil?
+          return render json: {
+            data: {
+              user:
+            },
+            message: 'Nemesis informa: Inventário não encontrado  !'
+          }
+        end
+
+        user = User.infected?(inventory.user_id)
         if user.present?
           return render json: {
             data: {
@@ -53,8 +63,18 @@ module Api
       end
 
       def destroy
-        user = User.infected(params[:user_id])
-        if user
+        inventory = Inventory.find_by(id: params[:inventory_id])
+        if inventory.nil?
+          return render json: {
+            data: {
+              user:
+            },
+            message: 'Nemesis informa: Inventário não encontrado  !'
+          }
+        end
+
+        user = User.infected(inventory.user_id)
+        if user.present?
           return render json: {
             data: {
               user:
