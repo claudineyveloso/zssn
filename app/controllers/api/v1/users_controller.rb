@@ -16,18 +16,6 @@ module Api
         render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: :success }
       end
 
-      def infected
-        render json: User.percentual_infecteds(true)
-      end
-
-      def uninfected
-        render json: User.percentual_infecteds(false)
-      end
-
-      def lost_score
-        render json: User.lost_score
-      end
-
       # Public: Create a new user.
       # POST /users
       # user_params - Strong parameters for creating a user, typically
@@ -41,6 +29,18 @@ module Api
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
+      end
+
+      def infected
+        render json: User.percentual_infecteds(true)
+      end
+
+      def uninfected
+        render json: User.percentual_infecteds(false)
+      end
+
+      def lost_score
+        render json: User.lost_score
       end
 
       # Public: Delete a specific user.
