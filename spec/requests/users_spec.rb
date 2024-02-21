@@ -152,8 +152,8 @@ RSpec.describe Api::V1::UsersController, type: :request do
       end
     end
 
-    path '/api/v1/users/{id}/current_location' do
-      parameter name: 'id', in: :path, type: :integer, required: true
+    path '/api/v1/users/current_location' do
+      parameter name: :id, in: :query, type: :integer, description: 'ID user'
       parameter name: :latitude, in: :query, type: :string, description: 'Latitude of new location'
       parameter name: :longitude, in: :query, type: :string, description: 'Longitude of new location'
 
