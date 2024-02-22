@@ -7,9 +7,8 @@ module Api
     class UsersController < ApplicationController
       # Public: Display a list of all users.
       # GET /api/v1/users
-      # Returns an JSON displaying all users.
+      # Returns a JSON displaying a given user.
       def show
-        # binding.break
         user = find_user
         return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
 
@@ -19,8 +18,7 @@ module Api
       # Public: Create a new user.
       # POST /users
       # user_params - Strong parameters for creating a user, typically
-      #               including :name, :email, :gender, :latitude, :longitude, :infected, :contamination_notification.
-      # Returns a redirection to the created user's page or an error message.
+      #               including :name, :age, :gender, :latitude, :longitude, :infected, :contamination_notification.
       # Returns an JSON  with new user  created.
       def create
         user = UserService.create_user_with_inventory(user_params)
@@ -31,19 +29,28 @@ module Api
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
       end
 
+      # Public: List of users infected.
+      # POST /users
+      # Returns an JSON with one list of users infected.
       def infected
         render json: User.percentual_infecteds(true)
       end
 
+      # Public: List of users uinfected.
+      # POST /users
+      # Returns an JSON with one list of users uninfected.
       def uninfected
         render json: User.percentual_infecteds(false)
       end
 
+      # Public: List of users with lost scores.
+      # POST /users
+      # Returns an JSON with one list of users with lost scores.
       def lost_score
         render json: User.lost_score
       end
 
-      # Public: Delete a specific user.
+      # Public: Update the location a specific user..
       # PUT /api/v1/users/:id/current_location
       # id - The unique identifier of the user.
       # Returns a user with their updated location
@@ -72,11 +79,9 @@ module Api
 
       private
 
-      # Private: Set the @user instance variable based on the provided user ID.
-      # This method is used as a `before_action` to ensure that the specified
-      # user is loaded before certain actions (show, edit, update, destroy).
+      # Private: Set the method  based on the provided user ID.
+      # user is loaded.
       # params[:id] - The unique identifier of the user.
-      # Returns nothing. Sets the @user instance variable.
       def find_user
         User.find_by(id: params[:id])
       end
