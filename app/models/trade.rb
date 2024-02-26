@@ -9,6 +9,13 @@ class Trade
                 :receiver_id,
                 :receiver_items
 
+  def initialize(attributes = {})
+    @giver_id = attributes[:giver_id]
+    @giver_items = attributes[:giver_items]
+    @receiver_id = attributes[:receiver_id]
+    @receiver_items = attributes[:receiver_items]
+  end
+
   validates :giver_id,
             :giver_items,
             :receiver_id,
@@ -27,7 +34,7 @@ class Trade
   private
 
   def validate_trade
-    errors.add(:base, 'Total de pontos dos itens trocados não são iguais') unless total_scores(giver_items) == total_scores(receiver_items)
+    errors.add(:base, 'Nemesis informa: Total de pontos dos itens trocados não são iguais') unless total_scores(giver_items) == total_scores(receiver_items)
   end
 
   def total_scores(items)
@@ -44,8 +51,5 @@ class Trade
     items.each do |item_id, quantity|
       InventoryItem.remove_quantity(user_id, item_id, quantity.to_i)
     end
-  end
-  def fsafdsafsa
-
   end
 end

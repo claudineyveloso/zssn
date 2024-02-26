@@ -18,6 +18,7 @@ RSpec.describe 'api/v1/users', type: :request do
         },
         required: %w[name age gender latitude longitude]
       }
+
       response(201, 'successful') do
         after do |example|
           example.metadata[:response][:content] = {
@@ -54,6 +55,18 @@ RSpec.describe 'api/v1/users', type: :request do
 
   path '/api/v1/current_location' do
     put('current_location user') do
+      tags 'Users'
+      consumes 'application/json'
+      parameter name: :user_params, in: :body, schema: {
+        type: :object,
+        properties: {
+          id: { type: :string },
+          latitude: { type: :string },
+          longitude: { type: :string }
+        },
+        required: %w[id latitude longitude]
+      }
+
       response(200, 'successful') do
         after do |example|
           example.metadata[:response][:content] = {

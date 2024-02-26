@@ -29,5 +29,6 @@ class InventoryItemSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at
 
+  belongs_to :inventory
   belongs_to :item
 end

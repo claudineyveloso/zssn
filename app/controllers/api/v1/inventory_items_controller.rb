@@ -49,10 +49,9 @@ module Api
           inventory_item = InventoryItem.create!(inventory_item_params)
           message = 'Item cadastrado com sucesso no inventário.'
         end
-
         render json: {
           data: {
-            inventory_item:,
+            inventory_item: ActiveModelSerializers::SerializableResource.new(inventory_item, serializer: InventoryItemSerializer),
             code: 201,
             message: "Nemesis informa: #{message}",
             status: :success
@@ -85,7 +84,7 @@ module Api
         inventory_item = InventoryItem.find(params[:id])
         inventory_item.destroy
         render json: { message: 'Nemesis informa: Item do inventário excluído com sucesso!' }
-      rescue ActiveRecord::RecordNotFound => e
+      rescue ActiveRecord::RecordNotFound
         render json: { error: 'Nemesis informa: ID não foi encontrado.' }, status: :not_found
       end
 
