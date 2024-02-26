@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :seed_data do
   desc 'Add Items in ZSSN'
   task insert_inventory_items: :environment do
@@ -5,7 +7,7 @@ namespace :seed_data do
                                         .where(inventory_items: { id: nil })
                                         .order(:id)
 
-    items = Item.all.order(:id)
+    items = Item.order(:id)
 
     users_without_inventory_items.each do |user|
       inventory = user.inventory || user.build_inventory

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :seed_data do
   desc 'Add Items in ZSSN'
   task insert_items: :environment do

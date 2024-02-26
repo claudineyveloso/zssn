@@ -1,24 +1,19 @@
-# README
+# Teste ZSSN/API
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Versão do Ruby
+  ruby '3.2.2'
 
-* System dependencies
+* Configuração
+  bundle install
 
-* Configuration
+* Criação de banco de dados
+  rails db:create
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Inicialização do banco de dados
+  rails db:migrate
+* Como executar o conjunto de testes

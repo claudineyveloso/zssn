@@ -53,7 +53,7 @@ module Api
           data: {
             inventory_item: ActiveModelSerializers::SerializableResource.new(inventory_item, serializer: InventoryItemSerializer),
             code: 201,
-            message: "#{message}",
+            message: message.to_s,
             status: :success
           }
         }
