@@ -1,5 +1,9 @@
 require:
   - rubocop-rails
+  - standard
+  - standard-custom
+  - standard-performance
+  - rubocop-performance
 Metrics/MethodLength:
   Max: 1000
 Metrics/AbcSize:

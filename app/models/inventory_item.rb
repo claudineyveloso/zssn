@@ -33,13 +33,13 @@ class InventoryItem < ApplicationRecord
   #   inventory_item.update(quantity: new_quantity)
   # end
   #
-  def self.add_quantity(user_id, item_id, quantity)
-    inventory_item = find_or_create_by(inventory_id: user_id, item_id:)
-      inventory_item.update(quantity: inventory_item.quantity + quantity)
+  def self.add_quantity(inventory_id, item_id, quantity)
+    inventory_item = find_or_create_by(inventory_id:, item_id:)
+    inventory_item.update(quantity: (inventory_item.quantity + quantity))
   end
 
-  def self.remove_quantity(user_id, item_id, quantity)
-    inventory_item = find_by(inventory_id: user_id, item_id:)
+  def self.remove_quantity(inventory_id, item_id, quantity)
+    inventory_item = find_by(inventory_id:, item_id:)
     return unless inventory_item
 
     new_quantity = [inventory_item.quantity - quantity, 0].max
