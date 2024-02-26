@@ -53,6 +53,7 @@ group :development, :test do
   gem 'rswag-api'
   gem 'rswag-ui'
   gem 'shoulda-matchers'
+  gem 'standard', '~> 1.34'
 end
 
 group :development do

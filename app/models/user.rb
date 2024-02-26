@@ -75,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def self.infected?(user_id)
-    users = infected(user_id)
+    infected(user_id)
   end
 
   def self.lost_score
