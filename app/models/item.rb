@@ -25,14 +25,14 @@ class Item < ApplicationRecord
             length: { maximum: 20 },
             uniqueness: true,
             inclusion: { in: opcoes_validas, message: lambda { |object, _|
-                                                        "Nemesis informa: #{object.description} #{I18n.t('errors.messages.inclusion')}. Por favor, escolha entre #{opcoes_validas.join(', ')}"
+                                                        "#{object.description} #{I18n.t('errors.messages.inclusion')}. Por favor, escolha entre #{opcoes_validas.join(', ')}"
                                                       } }
   validates :score, numericality: { only_integer: true }
 
   validates :score,
             presence: true,
             numericality: { only_integer: true,
-                            message: ->(object, _) { "Nemesis informa: Pontos #{object.score} #{I18n.t('errors.messages.not_a_number')}!" } }
+                            message: ->(object, _) { "Pontos #{object.score} #{I18n.t('errors.messages.not_a_number')}!" } }
 
   validate :valid_description_with_score, if: -> { %w[Água Comida Medicamento Munição].include?(description) }
 
@@ -48,6 +48,6 @@ class Item < ApplicationRecord
     return unless description && score != score_by_description[description]
 
     errors.add(:description,
-               ['Nemesis informa: Não corresponde aos pontos esperados. Ex: [Água - 4 pontos] --- [Comida - 3 pontos] --- [Medicamento - 2 pontos] --- [Munição - 1 pontos] '].join("\n"))
+               ['Não corresponde aos pontos esperados. Ex: [Água - 4 pontos] --- [Comida - 3 pontos] --- [Medicamento - 2 pontos] --- [Munição - 1 pontos] '].join("\n"))
   end
 end

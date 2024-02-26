@@ -16,7 +16,7 @@ module Api
               user_giver:,
               user_receiver:
             },
-            message: 'Nemesis informa: Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode criar um novo item de inventário no momento!'
+            message: 'Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode criar um novo item de inventário no momento!'
           }
         end
 
@@ -24,7 +24,36 @@ module Api
 
         if trade.valid?
           trade.execute_trade
-          render json: { message: 'Troca realizada com sucesso' }, status: :ok
+          user_giver = User.find(params[:trade][:giver_id])
+          inventory_giver = Inventory.find_by(user_id: params[:trade][:giver_id])
+          inventory_items_giver = InventoryItem.includes(:item).where(inventory_id: inventory_giver.id)
+          items_giver_hash = inventory_items_giver.map { |inventory_item| { inventory_item.item.description => inventory_item.quantity } }.reduce({}, :merge)
+
+          user_receiver = User.find(params[:trade][:receiver_id])
+          inventory_receiver = Inventory.find_by(user_id: params[:trade][:receiver_id])
+          inventory_items_receiver = InventoryItem.includes(:item).where(inventory_id: inventory_receiver.id)
+          items_receiver_hash = inventory_items_receiver.map { |inventory_item| { inventory_item.item.description => inventory_item.quantity } }.reduce({}, :merge)
+
+          render json: {
+                   user_giver: { name: user_giver.name },
+                   inventory_giver: {
+                     id: inventory_items_giver.first.inventory_id
+                   },
+                   inventory_items_giver: {
+                     items: items_giver_hash
+                   },
+
+                   user_receiver: { name: user_receiver.name },
+                   inventory_receiver: {
+                     id: inventory_items_receiver.first.inventory_id
+                   },
+                   inventory_items_receiver: {
+                     items: items_receiver_hash
+                   },
+                   message: 'Troca realizada com sucesso'
+                 },
+
+                 status: :ok
         else
           render json: { error: trade.errors.full_messages }, status: :unprocessable_entity
         end

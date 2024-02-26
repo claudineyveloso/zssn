@@ -44,19 +44,19 @@ class Trade
 
     # checks if the of giver item exists
     unless items_exist?(giver_id, giver_items)
-      errors.add(:base, 'Nemesis informa: Alguns itens do doador da troca não existem no inventário.')
+      errors.add(:base, 'Alguns itens do doador da troca não existem no inventário.')
       return
     end
 
     # checks if the of receiver item exists
     unless items_exist?(receiver_id, receiver_items)
-      errors.add(:base, 'Nemesis informa: Alguns itens do receptor da troca não existem no inventário.')
+      errors.add(:base, 'Alguns itens do receptor da troca não existem no inventário.')
       return
     end
 
     return if total_scores(giver_items) == total_scores(receiver_items)
 
-    errors.add(:base, 'Nemesis informa: Total de pontos dos itens trocados não são iguais.')
+    errors.add(:base, 'Total de pontos dos itens trocados não são iguais.')
   end
 
   def validate_inventory?
@@ -64,7 +64,7 @@ class Trade
     receiver_inventory = Inventory.find_by(id: receiver_id)
     return false unless giver_inventory.nil? || receiver_inventory.nil?
 
-    errors.add(:base, 'Nemesis informa: Um dos inventários informados não foi encontrado para realizar a troca de itens.')
+    errors.add(:base, 'Um dos inventários informados não foi encontrado para realizar a troca de itens.')
   end
 
   def items_exist?(inventory_id, items)

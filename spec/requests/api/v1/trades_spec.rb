@@ -2,64 +2,36 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'api/v1/trades', type: :request do
-  path '/api/v1/trades/{id}' do
-    # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
-    patch('update trade') do
-      tags 'InventoryItems'
+RSpec.describe 'Trades', type: :request do
+  path '/api/v1/trades' do
+    post 'Creates a trade' do
+      tags 'Trades'
       consumes 'application/json'
-      parameter name: :user_params, in: :body, schema: {
+      parameter name: :trade, in: :body, schema: {
         type: :object,
         properties: {
           giver_id: { type: :integer },
-          giver_items: { type: :array },
           receiver_id: { type: :integer },
-          receiver_items: { type: :array }
+          giver_items: { type: :object },
+          receiver_items: { type: :object }
         },
-        required: %w[giver_id giver_items receiver_id receiver_items]
+        required: %w[giver_id receiver_id giver_items receiver_items]
       }
 
-      response(200, 'successful') do
-        let(:id) { '123' }
+      response '200', 'trade created' do
+        let(:trade) { { giver_id: 1, receiver_id: 2, giver_items: { item1: 1 }, receiver_items: { item2: 2 } } }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do
+          expect(response).to have_http_status(200)
         end
-        run_test!
       end
-    end
 
-    put('update trade') do
-      tags 'InventoryItems'
-      consumes 'application/json'
-      parameter name: :user_params, in: :body, schema: {
-        type: :object,
-        properties: {
-          giver_id: { type: :integer },
-          giver_items: { type: :array },
-          receiver_id: { type: :integer },
-          receiver_items: { type: :array }
-        },
-        required: %w[giver_id giver_items receiver_id receiver_items]
-      }
+      response '422', 'invalid trade parameters' do
+        let(:trade) { { giver_id: 1, receiver_id: 2 } }
 
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do
+          expect(response).to have_http_status(422)
         end
-        run_test!
       end
     end
   end

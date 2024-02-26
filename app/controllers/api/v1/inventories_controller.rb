@@ -14,7 +14,7 @@ module Api
         User.find(params[:user_id])
         inventory = Inventory.create!(inventory_params)
         render json: {
-          data: { inventory:, code: 201, message: 'Nemesis informa: Inventário cadastrado com sucesso.', status: :success }
+          data: { inventory:, code: 201, message: 'Inventário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }

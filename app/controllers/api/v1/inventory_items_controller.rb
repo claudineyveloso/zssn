@@ -18,7 +18,7 @@ module Api
             data: {
               user:
             },
-            message: 'Nemesis informa: Inventário não encontrado  !'
+            message: 'Inventário não encontrado  !'
           }
         end
 
@@ -28,12 +28,12 @@ module Api
             data: {
               user:
             },
-            message: 'Nemesis informa: Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode criar um novo item de inventário no momento!'
+            message: 'Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode criar um novo item de inventário no momento!'
           }
         end
         item = Item.find_by(id: inventory_item_params[:item_id])
         unless item
-          render json: { error: 'Nemesis informa: Item não encontrado!' }, status: :not_found
+          render json: { error: 'Item não encontrado!' }, status: :not_found
           return
         end
         check_item = InventoryItem.includes(:inventory)
@@ -53,7 +53,7 @@ module Api
           data: {
             inventory_item: ActiveModelSerializers::SerializableResource.new(inventory_item, serializer: InventoryItemSerializer),
             code: 201,
-            message: "Nemesis informa: #{message}",
+            message: "#{message}",
             status: :success
           }
         }
@@ -68,7 +68,7 @@ module Api
             data: {
               user:
             },
-            message: 'Nemesis informa: Inventário não encontrado  !'
+            message: 'Inventário não encontrado  !'
           }
         end
 
@@ -78,14 +78,14 @@ module Api
             data: {
               user:
             },
-            message: 'Nemesis informa: Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode deletar item de inventário no momento!'
+            message: 'Usuário infectado! Lamentamos informar que, devido à sua condição de saúde, você não pode deletar item de inventário no momento!'
           }
         end
         inventory_item = InventoryItem.find(params[:id])
         inventory_item.destroy
-        render json: { message: 'Nemesis informa: Item do inventário excluído com sucesso!' }
+        render json: { message: 'Item do inventário excluído com sucesso!' }
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Nemesis informa: ID não foi encontrado.' }, status: :not_found
+        render json: { error: 'ID não foi encontrado.' }, status: :not_found
       end
 
       def items_quantity_average

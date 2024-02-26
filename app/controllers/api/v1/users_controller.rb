@@ -10,9 +10,9 @@ module Api
       # Returns a JSON displaying a given user.
       def show
         user = find_user
-        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
+        return render json: { error: 'ID do usuário não encontrado!', status: :not_found, code: 404 } unless user
 
-        render json: { data: user, code: 200, message: "Nemesis informa: Dados do usuário - #{user.name}.", status: :success }
+        render json: { data: user, code: 200, message: "Dados do usuário - #{user.name}.", status: :success }
       end
 
       # Public: Create a new user.
@@ -23,7 +23,7 @@ module Api
       def create
         user = UserService.create_user_with_inventory(user_params)
         render json: {
-          data: { user:, code: 201, message: 'Nemesis informa: Usuário cadastrado com sucesso.', status: :success }
+          data: { user:, code: 201, message: 'Usuário cadastrado com sucesso.', status: :success }
         }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
@@ -56,7 +56,7 @@ module Api
       # Returns a user with their updated location
       def current_location
         user = find_user
-        return render json: { error: 'Nemesis informa: ID do usuário não encontrado!', status: :not_found } unless user
+        return render json: { error: 'ID do usuário não encontrado!', status: :not_found } unless user
 
         user.update(location_params)
         render json: { data: {
@@ -71,7 +71,7 @@ module Api
                          updated_at: user.updated_at
                        },
                        code: 200,
-                       message: 'Nemesis informa: Localização atualizada com sucesso.',
+                       message: 'Localização atualizada com sucesso.',
                        status: :success }
       rescue ActiveRecord::RecordInvalid => e
         render json: { errors: e.record.errors.messages, status: :unprocessable_entity }
