@@ -1,9 +1,14 @@
 # Teste ZSSN/API
+Desenvolvimento de uma API para compartilhamento de informações entre indivíduos saudáveis
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Recursos Principais
 
-Things you may want to cover:
+# Requisitos
+  ruby 3.2.2
+  Rails 7.1.3
+  PostgreSQL
+
+# Configuração
 
 * Versão do Ruby
   ruby '3.2.2'
