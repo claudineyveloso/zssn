@@ -57,6 +57,8 @@ class Trade
     return if total_scores(giver_items) == total_scores(receiver_items)
 
     errors.add(:base, 'Total de pontos dos itens trocados não são iguais.')
+    errors.add(:base, "Total de pontos do usuário doador #{total_scores(giver_items)}.")
+    errors.add(:base, "Total de pontos do usuário receptador #{total_scores(receiver_items)}.")
   end
 
   def validate_inventory?
