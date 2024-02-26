@@ -4,11 +4,12 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
 # Recursos Principais
 
 # Requisitos
-  ruby 3.2.2
-  Rails 7.1.3
-  PostgreSQL
+  * ruby 3.2.2
+  * Rails 7.1.3
+  * PostgreSQL
 
 # Configuração
+  * bundle install
 
 * Versão do Ruby
   ruby '3.2.2'
