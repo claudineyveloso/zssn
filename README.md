@@ -11,18 +11,14 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
 # Configuração
   * bundle install
 
-* Versão do Ruby
-  ruby '3.2.2'
-
-* Configuração
-  bundle install
-
 * Criação de banco de dados
   rails db:create
 
 * Inicialização do banco de dados
   rails db:migrate
-* Como executar o conjunto de testes
+  * Foi criado um seed com o cadastro de 100 usuário.
+  * Execute rails:seed
+  *
 
 # Uso
 # Documentação da API
@@ -51,6 +47,9 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
   * GET    /api/v1/check_infected
 
 # Teste
+  Foi adicionado a gem rswag para a documentação da API, as
+  rotas podem ser testadas no link abaixo.
+
   * http://localhost:3000/api-docs/index.html
 # Autor
   * Claudiney Veloso
