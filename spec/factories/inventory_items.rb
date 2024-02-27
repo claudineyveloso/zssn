@@ -25,6 +25,6 @@ FactoryBot.define do
   factory :inventory_item do
     inventory
     item
-    quantidade { Faker::Number.between(from: 1, to: 10) }
+    quantity { Faker::Number.between(from: 1, to: 10) }
   end
 end

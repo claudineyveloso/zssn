@@ -24,5 +24,28 @@
 require 'rails_helper'
 
 RSpec.describe InventoryItem, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let!(:inventory) { create(:inventory) }
+  let!(:item) { create(:item) }
+  let!(:inventory_item) { create(:inventory_item, inventory:, item:, quantity: 10) }
+
+  describe 'associations' do
+    it { should belong_to(:inventory) }
+    it { should belong_to(:item) }
+  end
+
+  describe '.add_quantity' do
+    it 'adds quantity to the inventory item' do
+      expect do
+        InventoryItem.add_quantity(inventory.id, item.id, 5)
+      end.to change { inventory_item.reload.quantity }.by(5)
+    end
+  end
+
+  describe '.remove_quantity' do
+    it 'removes quantity from the inventory item' do
+      expect do
+        InventoryItem.remove_quantity(inventory.id, item.id, 3)
+      end.to change { inventory_item.reload.quantity }.by(-3)
+    end
+  end
 end

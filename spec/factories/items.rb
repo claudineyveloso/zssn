@@ -16,7 +16,27 @@
 #
 FactoryBot.define do
   factory :item do
-    description { %w[Água Comida Medicamento Munição].sample }
-    score { [4, 3, 2, 1].sample }
+    description { 'Água' }
+    score { 4 }
+
+    trait :agua do
+      description { 'Água' }
+      score { 4 }
+    end
+
+    trait :comida do
+      description { 'Comida' }
+      score { 3 }
+    end
+
+    trait :medicamento do
+      description { 'Medicamento' }
+      score { 2 }
+    end
+
+    trait :municao do
+      description { 'Munição' }
+      score { 1 }
+    end
   end
 end
