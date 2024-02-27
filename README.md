@@ -17,10 +17,12 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
 * Inicialização do banco de dados
   rails db:migrate
   * Foi criado um seed com o cadastro de 100 usuário.
-  * Execute rails:seed
-  *
+  - Execute rails:seed
+  * Foi criado uma rake para cadastrar os itens.
+  - bundle exec rake seed_data:insert_items
+  * Foi criado uma rake para cadastrar os itens.
+  bundle exec rake seed_data:insert_inventory_items
 
-# Uso
 # Documentação da API
   * Rotas
     =====
