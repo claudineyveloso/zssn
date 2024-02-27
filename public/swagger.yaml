@@ -1,0 +1,308 @@
+---
+openapi: 3.0.1
+info:
+  title: Documentation API V1
+  description: Sample app created for WeCancer
+  version: v1
+paths:
+  "/api/v1/infecteds":
+    post:
+      summary: create infected
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id_reported:
+                  type: integer
+                user_id_notified:
+                  type: integer
+              required:
+              - user_id_reported
+              - user_id_notified
+  "/api/v1/check_infected":
+    get:
+      summary: check_infected infected
+      responses:
+        '200':
+          description: successful
+  "/api/v1/inventories":
+    get:
+      summary: list inventories
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create inventory
+      tags:
+      - Inventory
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+              - user_id
+  "/api/v1/inventories/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show inventory
+      responses:
+        '200':
+          description: successful
+  "/api/v1/inventory_items":
+    get:
+      summary: list inventory_items
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create inventory_item
+      tags:
+      - InventoryItems
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inventory_id:
+                  type: integer
+                item_id:
+                  type: integer
+                quantity:
+                  type: integer
+              required:
+              - inventory_id
+              - item_id
+              - quantity
+  "/api/v1/inventory/{inventory_id}/inventory_item/{id}":
+    parameters:
+    - name: inventory_id
+      in: path
+      description: inventory_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: delete inventory_item
+      responses:
+        '200':
+          description: successful
+  "/api/v1/items_quantity_average":
+    get:
+      summary: items_quantity_average inventory_item
+      responses:
+        '200':
+          description: successful
+  "/api/v1/items":
+    get:
+      summary: list items
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create item
+      tags:
+      - Items
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                score:
+                  type: integer
+              required:
+              - description
+              - score
+  "/api/v1/trades/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update trade
+      tags:
+      - InventoryItems
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                giver_id:
+                  type: integer
+                giver_items:
+                  type: array
+                receiver_id:
+                  type: integer
+                receiver_items:
+                  type: array
+              required:
+              - giver_id
+              - giver_items
+              - receiver_id
+              - receiver_items
+    put:
+      summary: update trade
+      tags:
+      - InventoryItems
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                giver_id:
+                  type: integer
+                giver_items:
+                  type: array
+                receiver_id:
+                  type: integer
+                receiver_items:
+                  type: array
+              required:
+              - giver_id
+              - giver_items
+              - receiver_id
+              - receiver_items
+  "/api/v1/users":
+    post:
+      summary: create user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+                gender:
+                  type: string
+                latitude:
+                  type: string
+                longitude:
+                  type: string
+              required:
+              - name
+              - age
+              - gender
+              - latitude
+              - longitude
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show user
+      responses:
+        '200':
+          description: successful
+  "/api/v1/current_location":
+    put:
+      summary: current_location user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                latitude:
+                  type: string
+                longitude:
+                  type: string
+              required:
+              - id
+              - latitude
+              - longitude
+  "/api/v1/uninfected":
+    get:
+      summary: uninfected user
+      responses:
+        '200':
+          description: successful
+  "/api/v1/infected":
+    get:
+      summary: infected user
+      responses:
+        '200':
+          description: successful
+  "/api/v1/lost_score":
+    get:
+      summary: lost_score user
+      responses:
+        '200':
+          description: successful
+servers:
+- url: http://localhost:3000
+  variables:
+    defaultHost:
+      default: localhost:3000
