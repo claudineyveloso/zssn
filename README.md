@@ -15,7 +15,9 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
   - rails db:create
 
 * Inicialização do banco de dados
+
   rails db:migrate
+
   * Foi criado um seed com o cadastro de 100 usuário.
 
     Execute rails:seed
