@@ -152,22 +152,17 @@ paths:
               required:
               - description
               - score
-  "/api/v1/trades/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
-    patch:
-      summary: update trade
+  "/api/v1/trades":
+    post:
+      summary: Creates a trade
       tags:
-      - InventoryItems
+      - Trades
       parameters: []
       responses:
         '200':
-          description: successful
+          description: trade created
+        '422':
+          description: invalid trade parameters
       requestBody:
         content:
           application/json:
@@ -176,43 +171,16 @@ paths:
               properties:
                 giver_id:
                   type: integer
-                giver_items:
-                  type: array
                 receiver_id:
                   type: integer
-                receiver_items:
-                  type: array
-              required:
-              - giver_id
-              - giver_items
-              - receiver_id
-              - receiver_items
-    put:
-      summary: update trade
-      tags:
-      - InventoryItems
-      parameters: []
-      responses:
-        '200':
-          description: successful
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                giver_id:
-                  type: integer
                 giver_items:
-                  type: array
-                receiver_id:
-                  type: integer
+                  type: object
                 receiver_items:
-                  type: array
+                  type: object
               required:
               - giver_id
-              - giver_items
               - receiver_id
+              - giver_items
               - receiver_items
   "/api/v1/users":
     post:

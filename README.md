@@ -9,6 +9,7 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
   * PostgreSQL
 
 # Configuração
+  * git clone git@github.com:claudineyveloso/zssn.git
   * bundle install
 
 * Criação de banco de dados
@@ -58,9 +59,12 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
   * GET    /api/v1/check_infected
 
 # Teste
+  rspec spec/models
+
   Foi adicionado a gem rswag para a documentação da API, as
   rotas podem ser testadas no link abaixo.
 
   * http://localhost:3000/api-docs/index.html
+
 # Autor
   * Claudiney Veloso
