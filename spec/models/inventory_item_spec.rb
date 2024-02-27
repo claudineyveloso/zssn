@@ -25,7 +25,7 @@ require 'rails_helper'
 
 RSpec.describe InventoryItem, type: :model do
   let!(:inventory) { create(:inventory) }
-  let!(:item) { create(:item) }
+  let!(:item) { create(:item, :agua) }
   let!(:inventory_item) { create(:inventory_item, inventory:, item:, quantity: 10) }
   let(:inventory_id) { inventory_item.inventory_id }
   let(:item_id) { inventory_item.item_id }

@@ -23,8 +23,15 @@
 #
 FactoryBot.define do
   factory :inventory_item do
-    inventory
-    item
     quantity { Faker::Number.between(from: 1, to: 10) }
+    association :inventory
+    association :item
+
+    trait :agua do
+      association :item, factory: %i[item agua]
+    end
+    trait :comida do
+      association :item, factory: %i[item comida]
+    end
   end
 end
