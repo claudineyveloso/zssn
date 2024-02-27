@@ -25,14 +25,6 @@ class InventoryItem < ApplicationRecord
   belongs_to :inventory
   belongs_to :item
 
-  # def self.update_quantity(user_id, item_id, quantity)
-  #   inventory_item = find_by(inventory_id: user_id, item_id:)
-  #   return unless inventory_item
-
-  #   new_quantity = [inventory_item.quantity + quantity, 0].max
-  #   inventory_item.update(quantity: new_quantity)
-  # end
-  #
   def self.add_quantity(inventory_id, item_id, quantity)
     inventory_item = find_or_create_by(inventory_id:, item_id:)
     inventory_item.update(quantity: (inventory_item.quantity + quantity))

@@ -152,6 +152,68 @@ paths:
               required:
               - description
               - score
+  "/api/v1/trades/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update trade
+      tags:
+      - InventoryItems
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                giver_id:
+                  type: integer
+                giver_items:
+                  type: array
+                receiver_id:
+                  type: integer
+                receiver_items:
+                  type: array
+              required:
+              - giver_id
+              - giver_items
+              - receiver_id
+              - receiver_items
+    put:
+      summary: update trade
+      tags:
+      - InventoryItems
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                giver_id:
+                  type: integer
+                giver_items:
+                  type: array
+                receiver_id:
+                  type: integer
+                receiver_items:
+                  type: array
+              required:
+              - giver_id
+              - giver_items
+              - receiver_id
+              - receiver_items
   "/api/v1/users":
     post:
       summary: create user
