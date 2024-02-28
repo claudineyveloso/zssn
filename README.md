@@ -10,7 +10,8 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
 
 # Configuração
   * git clone git@github.com:claudineyveloso/zssn.git
-  * bundle install
+
+    bundle install
 
 * Criação de banco de dados
   - rails db:create
@@ -61,7 +62,7 @@ Desenvolvimento de uma API para compartilhamento de informações entre indivíd
 # Teste
   rspec spec/models
 
-  Foi adicionado a gem rswag para a documentação da API, as
+  Foi adicionado a gem rswag para a documentação da API no Swagger, as
   rotas podem ser testadas no link abaixo.
 
   * http://localhost:3000/api-docs/index.html
